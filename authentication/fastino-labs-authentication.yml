@@ -1,0 +1,36 @@
+generated: '2026-07-19'
+method: searched
+source: openapi/pioneer-openapi-original.json
+docs: https://docs.pioneer.ai/api-reference/authentication
+key_prefix: pio_sk_
+key_management:
+  create: POST https://api.pioneer.ai/create-api-key
+  list: GET https://api.pioneer.ai/list-api-keys
+  revoke: DELETE https://api.pioneer.ai/delete-api-key
+  console: https://agent.pioneer.ai/settings/api-keys
+oauth:
+  provider: Supabase
+  metadata: https://api.pioneer.ai/.well-known/openid-configuration
+  scopes: scopes/fastino-labs-scopes.yml
+summary:
+  types:
+  - apiKey
+  - http
+  api_key_in:
+  - header
+schemes:
+- name: ApiKeyAuth
+  type: apiKey
+  in: header
+  parameter: X-API-Key
+  description: Pioneer API key. Generate one at https://agent.pioneer.ai/settings/api-keys.
+    Keys begin with `pio_sk_`.
+  sources:
+  - openapi/pioneer-openapi-original.json
+- name: BearerAuth
+  type: http
+  scheme: bearer
+  bearerFormat: JWT
+  description: Supabase access token or Pioneer API key as a Bearer token.
+  sources:
+  - openapi/pioneer-openapi-original.json

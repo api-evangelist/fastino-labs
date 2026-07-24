@@ -1,0 +1,490 @@
+openapi: 3.1.0
+info:
+  title: Pioneer Inference anthropic-compat openai-compat API
+  version: 1.0.0
+  description: Public inference API for Pioneer AI. Covers the Pioneer-native endpoint, OpenAI-compatible endpoints (/v1/chat/completions, /v1/completions, /v1/models), the Anthropic-compatible endpoint (/v1/messages), and inference history. Authenticate with an X-API-Key header (keys begin with pio_sk_).
+  contact:
+    name: Pioneer AI
+    url: https://docs.pioneer.ai
+    email: support@pioneer.ai
+servers:
+- url: https://api.pioneer.ai
+  description: Production
+security:
+- ApiKeyAuth: []
+- BearerAuth: []
+tags:
+- name: openai-compat
+  description: OpenAI-compatible endpoints. Use with the OpenAI SDK by setting base_url=https://api.pioneer.ai/v1.
+paths:
+  /v1/chat/completions:
+    post:
+      operationId: create_chat_completion
+      summary: Chat completions (OpenAI-compatible)
+      description: OpenAI-compatible chat completions endpoint. Works with the OpenAI Python SDK by setting `base_url="https://api.pioneer.ai/v1"`. Set `stream=true` for SSE streaming. The response includes a `x_pioneer` extension field with `inference_id` and `routed_model`.
+      tags:
+      - openai-compat
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatCompletionRequest'
+            examples:
+              simple:
+                summary: Simple chat completion
+                value:
+                  model: Qwen/Qwen3-8B
+                  messages:
+                  - role: user
+                    content: Hello!
+              streaming:
+                summary: Streaming chat completion
+                value:
+                  model: Qwen/Qwen3-8B
+                  messages:
+                  - role: user
+                    content: Tell me a short story.
+                  stream: true
+                  max_tokens: 512
+              pioneer_auto:
+                summary: Use pioneer/auto router
+                value:
+                  model: pioneer/auto
+                  messages:
+                  - role: user
+                    content: Classify this text.
+      responses:
+        '200':
+          description: 'Chat completion result. Returns `application/json` when `stream=false` (default) and `text/event-stream` SSE when `stream=true`. Each SSE event is `data: {...}\n\n` terminated by `data: [DONE]\n\n`.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatCompletionResponse'
+            text/event-stream:
+              schema:
+                $ref: '#/components/schemas/ChatCompletionStreamChunk'
+              example: 'data: {"id":"chatcmpl-abc","object":"chat.completion.chunk","created":0,"model":"Qwen/Qwen3-8B","choices":[{"index":0,"delta":{"content":"Hi"},"finish_reason":null}]}
+
+
+                data: [DONE]
+
+
+                '
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
+        '404':
+          $ref: '#/components/responses/ModelNotFound'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+  /v1/completions:
+    post:
+      operationId: create_text_completion
+      summary: Text completions (OpenAI-compatible)
+      description: OpenAI-compatible legacy text completions endpoint. Accepts a `prompt` string and returns a completion. Set `stream=true` for SSE streaming.
+      tags:
+      - openai-compat
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TextCompletionRequest'
+            examples:
+              simple:
+                summary: Simple text completion
+                value:
+                  model: Qwen/Qwen3-8B-Base
+                  prompt: The capital of France is
+                  max_tokens: 32
+      responses:
+        '200':
+          description: Text completion result. `application/json` when `stream=false`, `text/event-stream` SSE when `stream=true`.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TextCompletionResponse'
+            text/event-stream:
+              schema:
+                $ref: '#/components/schemas/TextCompletionStreamChunk'
+              example: 'data: {"id":"cmpl-abc","object":"text_completion","created":0,"model":"Qwen/Qwen3-8B-Base","choices":[{"index":0,"text":" Paris.","finish_reason":"stop"}]}
+
+
+                data: [DONE]
+
+
+                '
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
+        '404':
+          $ref: '#/components/responses/ModelNotFound'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+components:
+  responses:
+    RateLimited:
+      description: Rate limit exceeded. Retry after the duration in the `Retry-After` response header.
+      headers:
+        Retry-After:
+          schema:
+            type: integer
+          description: Seconds to wait before retrying.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    PaymentRequired:
+      description: Insufficient credits or no active billing plan.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    ValidationError:
+      description: Request body failed schema validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationErrorResponse'
+    ModelNotFound:
+      description: Model ID not found or not yet deployed.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  schemas:
+    TextCompletionRequest:
+      type: object
+      required:
+      - model
+      - prompt
+      properties:
+        model:
+          type: string
+        prompt:
+          type: string
+        temperature:
+          type: number
+        max_tokens:
+          type: integer
+          minimum: 1
+          maximum: 131072
+        stream:
+          type: boolean
+        stop:
+          oneOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+        echo:
+          type: boolean
+          default: false
+        logprobs:
+          type: integer
+          minimum: 0
+          maximum: 20
+        store:
+          type: boolean
+          default: true
+        reasoning:
+          type: object
+    UsageStats:
+      type: object
+      properties:
+        prompt_tokens:
+          type: integer
+        completion_tokens:
+          type: integer
+        total_tokens:
+          type: integer
+        prompt_tokens_details:
+          type: object
+          properties:
+            cached_tokens:
+              type: integer
+              description: Input tokens served from cache (cache read).
+            cache_write_tokens:
+              type: integer
+              description: Input tokens written to cache (cache creation).
+    ValidationErrorResponse:
+      type: object
+      properties:
+        detail:
+          type: array
+          items:
+            type: object
+            properties:
+              loc:
+                type: array
+                items:
+                  oneOf:
+                  - type: string
+                  - type: integer
+              msg:
+                type: string
+              type:
+                type: string
+    TextCompletionResponse:
+      type: object
+      required:
+      - id
+      - object
+      - created
+      - model
+      - choices
+      - usage
+      properties:
+        id:
+          type: string
+        object:
+          type: string
+          enum:
+          - text_completion
+        created:
+          type: integer
+        model:
+          type: string
+        choices:
+          type: array
+          items:
+            type: object
+            properties:
+              index:
+                type: integer
+              text:
+                type: string
+              logprobs:
+                type: object
+              finish_reason:
+                type: string
+              reasoning_content:
+                type: string
+        usage:
+          $ref: '#/components/schemas/UsageStats'
+        x_pioneer:
+          $ref: '#/components/schemas/PioneerExtension'
+    ChatCompletionRequest:
+      type: object
+      required:
+      - model
+      - messages
+      properties:
+        model:
+          type: string
+          description: Model ID, project name, or `pioneer/auto` for automatic routing.
+        messages:
+          type: array
+          minItems: 1
+          items:
+            type: object
+            properties:
+              role:
+                type: string
+              content:
+                oneOf:
+                - type: string
+                - type: array
+                  items:
+                    type: object
+              tool_calls:
+                type: array
+              tool_call_id:
+                type: string
+        temperature:
+          type: number
+        max_tokens:
+          type: integer
+          minimum: 1
+          maximum: 131072
+        stream:
+          type: boolean
+          default: false
+        stop:
+          oneOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+        response_format:
+          type: object
+        tools:
+          type: array
+        tool_choice:
+          oneOf:
+          - type: string
+          - type: object
+        top_p:
+          type: number
+        store:
+          type: boolean
+          default: true
+          description: Persist to inference history. Set false to opt out.
+        metadata:
+          type: object
+          description: Pioneer reads `metadata.project_id` for attribution.
+        reasoning:
+          type: object
+          description: 'Opt-in reasoning controls (OpenRouter-normalized). Keys: enabled, effort (minimal/low/medium/high/xhigh/none), max_tokens, exclude, mode (manual/adaptive, Anthropic-only), display (summarized/omitted, Anthropic-only). effort and max_tokens are mutually exclusive.'
+        schema:
+          oneOf:
+          - type: object
+          - type: array
+            items:
+              type: string
+          description: 'Pioneer encoder extension: extraction schema dict.'
+        seed:
+          type: integer
+        n:
+          type: integer
+        presence_penalty:
+          type: number
+        frequency_penalty:
+          type: number
+        user:
+          type: string
+    PioneerExtension:
+      type: object
+      description: Pioneer-specific extension on OpenAI-compatible responses.
+      properties:
+        inference_id:
+          type: string
+          description: Pioneer inference record ID. Use with GET /inferences/{inference_id} to poll for async LLM-judge results. Null when persistence was disabled.
+        routed_model:
+          type: string
+          description: Actual backend model selected by a router project (e.g. `pioneer/auto`). Null when not routed.
+    ErrorResponse:
+      type: object
+      properties:
+        detail:
+          oneOf:
+          - type: string
+          - type: object
+          description: Human-readable error message or structured detail object.
+    TextCompletionStreamChunk:
+      type: object
+      description: One SSE event payload for /v1/completions when `stream=true`.
+      properties:
+        id:
+          type: string
+        object:
+          type: string
+          enum:
+          - text_completion
+        created:
+          type: integer
+        model:
+          type: string
+        choices:
+          type: array
+          items:
+            type: object
+            properties:
+              index:
+                type: integer
+              text:
+                type: string
+              finish_reason:
+                type: string
+              reasoning_content:
+                type: string
+        usage:
+          $ref: '#/components/schemas/UsageStats'
+        x_pioneer:
+          $ref: '#/components/schemas/PioneerExtension'
+    ChatCompletionResponse:
+      type: object
+      required:
+      - id
+      - object
+      - created
+      - model
+      - choices
+      - usage
+      properties:
+        id:
+          type: string
+        object:
+          type: string
+          enum:
+          - chat.completion
+        created:
+          type: integer
+        model:
+          type: string
+        choices:
+          type: array
+          items:
+            type: object
+            properties:
+              index:
+                type: integer
+              message:
+                type: object
+              finish_reason:
+                type: string
+        usage:
+          $ref: '#/components/schemas/UsageStats'
+        x_pioneer:
+          $ref: '#/components/schemas/PioneerExtension'
+    ChatCompletionStreamChunk:
+      type: object
+      description: 'One SSE event payload when `stream=true`. Terminal chunk carries `finish_reason` and optionally `usage` and `x_pioneer`. Stream ends with `data: [DONE]`.'
+      properties:
+        id:
+          type: string
+        object:
+          type: string
+          enum:
+          - chat.completion.chunk
+        created:
+          type: integer
+        model:
+          type: string
+        choices:
+          type: array
+          items:
+            type: object
+            properties:
+              index:
+                type: integer
+              delta:
+                type: object
+                properties:
+                  content:
+                    type: string
+                  reasoning_content:
+                    type: string
+                    description: Chain-of-thought tokens (de facto vLLM/DeepSeek/Fireworks/OpenRouter extension).
+                  tool_calls:
+                    type: array
+              finish_reason:
+                type: string
+        usage:
+          $ref: '#/components/schemas/UsageStats'
+        x_pioneer:
+          $ref: '#/components/schemas/PioneerExtension'
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: Pioneer API key. Generate one at https://agent.pioneer.ai/settings/api-keys. Keys begin with `pio_sk_`.
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Supabase access token or Pioneer API key as a Bearer token.

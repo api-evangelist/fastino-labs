@@ -1,0 +1,386 @@
+openapi: 3.1.0
+info:
+  title: Pioneer Inference anthropic-compat inference-history API
+  version: 1.0.0
+  description: Public inference API for Pioneer AI. Covers the Pioneer-native endpoint, OpenAI-compatible endpoints (/v1/chat/completions, /v1/completions, /v1/models), the Anthropic-compatible endpoint (/v1/messages), and inference history. Authenticate with an X-API-Key header (keys begin with pio_sk_).
+  contact:
+    name: Pioneer AI
+    url: https://docs.pioneer.ai
+    email: support@pioneer.ai
+servers:
+- url: https://api.pioneer.ai
+  description: Production
+security:
+- ApiKeyAuth: []
+- BearerAuth: []
+tags:
+- name: inference-history
+  description: List and retrieve past inference records.
+paths:
+  /inferences:
+    get:
+      operationId: list_inferences
+      summary: List inference history
+      description: Paginated list of past inference records for the authenticated user's team. Supports filtering by model, project, task type, latency range, and LLM-as-Judge score.
+      tags:
+      - inference-history
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 500
+          default: 100
+        description: Maximum records to return.
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+        description: Records to skip for pagination.
+      - name: model_id
+        in: query
+        schema:
+          type: string
+        description: Filter by model ID.
+      - name: project_id
+        in: query
+        schema:
+          type: string
+        description: Filter by project ID.
+      - name: training_job_id
+        in: query
+        schema:
+          type: string
+        description: Filter by training job UUID.
+      - name: task
+        in: query
+        schema:
+          type: string
+        description: Filter by task type (extract_entities, classify_text, extract_json, generate).
+      - name: latency_min
+        in: query
+        schema:
+          type: number
+          minimum: 0
+        description: Minimum latency in ms.
+      - name: latency_max
+        in: query
+        schema:
+          type: number
+          minimum: 0
+        description: Maximum latency in ms.
+      - name: llmaj_score_min
+        in: query
+        schema:
+          type: number
+          minimum: 0.0
+          maximum: 1.0
+        description: Minimum LLM-as-Judge score [0.0, 1.0].
+      - name: llmaj_score_max
+        in: query
+        schema:
+          type: number
+          minimum: 0.0
+          maximum: 1.0
+        description: Maximum LLM-as-Judge score [0.0, 1.0].
+      - name: since
+        in: query
+        schema:
+          type: string
+          format: date-time
+        description: Return records created at or after this ISO 8601 timestamp.
+      - name: until
+        in: query
+        schema:
+          type: string
+          format: date-time
+        description: Return records created at or before this ISO 8601 timestamp.
+      responses:
+        '200':
+          description: Paginated list of inference records.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InferenceListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /inferences/{inference_id}:
+    get:
+      operationId: get_inference
+      summary: Get an inference record
+      description: Retrieve a single inference record by ID. Includes LLM-as-Judge verdict and score when judging has completed (fields are null until then).
+      tags:
+      - inference-history
+      parameters:
+      - name: inference_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The inference record UUID returned in `inference_id` on any inference response.
+      responses:
+        '200':
+          description: The inference record.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InferenceRecord'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /inferences/{inference_id}/feedback:
+    post:
+      operationId: submit_inference_feedback
+      summary: Submit inference feedback
+      description: Submit a human correction on a past inference. Corrections are used as labeled examples for Adaptive Inference — Pioneer's continuous improvement loop that retrains your model on corrected live-traffic examples.
+      tags:
+      - inference-history
+      parameters:
+      - name: inference_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The inference record UUID to annotate.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InferenceFeedbackRequest'
+            examples:
+              correct:
+                summary: Mark as correct
+                value:
+                  verdict: correct
+              incorrect:
+                summary: Mark as incorrect with correction
+                value:
+                  verdict: incorrect
+                  corrected_output:
+                    entities:
+                    - text: Apple
+                      label: organization
+                      start: 0
+                      end: 5
+                    - text: iPhone
+                      label: product
+                      start: 18
+                      end: 24
+                  notes: Missed the product entity
+      responses:
+        '200':
+          description: Feedback recorded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InferenceFeedbackResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+components:
+  responses:
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    ValidationError:
+      description: Request body failed schema validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationErrorResponse'
+  schemas:
+    ValidationErrorResponse:
+      type: object
+      properties:
+        detail:
+          type: array
+          items:
+            type: object
+            properties:
+              loc:
+                type: array
+                items:
+                  oneOf:
+                  - type: string
+                  - type: integer
+              msg:
+                type: string
+              type:
+                type: string
+    InferenceFeedbackRequest:
+      type: object
+      required:
+      - verdict
+      properties:
+        verdict:
+          type: string
+          enum:
+          - correct
+          - incorrect
+        corrected_output:
+          description: Required when verdict is `incorrect`. Shape should match the original inference schema.
+        notes:
+          type: string
+          maxLength: 5000
+    ErrorResponse:
+      type: object
+      properties:
+        detail:
+          oneOf:
+          - type: string
+          - type: object
+          description: Human-readable error message or structured detail object.
+    InferenceRecord:
+      type: object
+      required:
+      - id
+      - user_id
+      - model_id
+      - input
+      - source
+      - status
+      - created_at
+      properties:
+        id:
+          type: string
+        user_id:
+          type: string
+        model_id:
+          type: string
+        model_name:
+          type: string
+        task:
+          type: string
+        input:
+          type: string
+        output: {}
+        latency_ms:
+          type: integer
+        tokens:
+          type: integer
+        input_tokens:
+          type: integer
+        output_tokens:
+          type: integer
+        cache_read_tokens:
+          type: integer
+        cache_write_tokens:
+          type: integer
+        source:
+          type: string
+          enum:
+          - api
+          - ui
+        status:
+          type: string
+          enum:
+          - success
+          - failed
+        error_type:
+          type: string
+          enum:
+          - validation
+          - timeout
+          - model_not_ready
+          - model_not_found
+          - model_not_supported
+          - capacity_exhausted
+          - internal
+        error_message:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        project_id:
+          type: string
+        training_job_id:
+          type: string
+        provider:
+          type: string
+        base_model:
+          type: string
+        metadata:
+          type: object
+        human_verdict:
+          type: string
+          enum:
+          - correct
+          - incorrect
+        human_corrected_output: {}
+        human_feedback_notes:
+          type: string
+        human_feedback_at:
+          type: string
+          format: date-time
+        llmaj_verdict:
+          type: string
+          enum:
+          - pass
+          - fail
+          - uncertain
+          description: LLM-as-Judge verdict. Null until judging completes.
+        llmaj_score:
+          type: number
+          description: LLM-as-Judge confidence score [0.0, 1.0]. Null until judging completes.
+        llmaj_judged_at:
+          type: string
+          format: date-time
+        llmaj_reasoning:
+          type: string
+    InferenceFeedbackResponse:
+      type: object
+      properties:
+        inference_id:
+          type: string
+        human_verdict:
+          type: string
+        human_feedback_at:
+          type: string
+          format: date-time
+    InferenceListResponse:
+      type: object
+      required:
+      - inferences
+      - total
+      - limit
+      - offset
+      properties:
+        inferences:
+          type: array
+          items:
+            $ref: '#/components/schemas/InferenceRecord'
+        total:
+          type: integer
+          description: Total matching records (for pagination).
+        limit:
+          type: integer
+        offset:
+          type: integer
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: Pioneer API key. Generate one at https://agent.pioneer.ai/settings/api-keys. Keys begin with `pio_sk_`.
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Supabase access token or Pioneer API key as a Bearer token.

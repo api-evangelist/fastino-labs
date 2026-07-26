@@ -1,0 +1,20 @@
+generated: '2026-07-19'
+method: searched
+source: https://docs.pioneer.ai/api-reference/overview
+versioning:
+  scheme: uri-path
+  current: v1
+  note: >-
+    Native Pioneer endpoints are unversioned at the root (https://api.pioneer.ai);
+    the OpenAI/Anthropic compatibility layer is served under /v1
+    (https://api.pioneer.ai/v1). OpenAPI info.version is 1.0.0.
+  docs: https://docs.pioneer.ai/api-reference/overview
+deprecation:
+  policy_url: null
+  sunset_header: false
+  note: No public deprecation policy or RFC 8594 Sunset/Deprecation header support found.
+status_page: https://pioneerai.statuspage.io
+health_check: https://api.pioneer.ai/health
+pricing_changes:
+  note: A legacy pricing tier (before 2026-07-01) is documented at https://docs.pioneer.ai/legacy-pricing
+deprecated_operations: []

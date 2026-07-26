@@ -1,0 +1,39 @@
+generated: '2026-07-19'
+method: searched
+source: https://api.pioneer.ai/.well-known/agent-skills/index.json
+notes: >-
+  Pioneer publishes hosted Agent Skills (Agent Skills discovery RFC v0.2.0) at
+  /.well-known/agent-skills/. All five SKILL.md files below were fetched verbatim;
+  fastino-labs-pioneer-api.md is the combined skill from the docs Agent Skills guide.
+api: openapi/pioneer-openapi-original.json
+skills:
+- file: fastino-labs-pioneer-api.md
+  name: pioneer-api
+  description: Interact with the Pioneer API to manage datasets, training jobs, evaluations, and run inference.
+  source: https://docs.pioneer.ai/guides/agent-skills
+  operations: [run_inference, create_chat_completion, create_message, list_inferences, get_inference, submit_inference_feedback]
+- file: fastino-labs-pioneer-inference.md
+  name: pioneer-inference
+  description: Run NER, classification, or generation inference on a Pioneer model using the native or OpenAI/Anthropic-compatible endpoints.
+  source: https://api.pioneer.ai/.well-known/agent-skills/pioneer-inference/SKILL.md
+  operations: [run_inference, create_chat_completion, create_text_completion, create_message, list_models]
+- file: fastino-labs-pioneer-fine-tune.md
+  name: pioneer-fine-tune
+  description: Fine-tune a GLiNER or decoder model on Pioneer from a labeled dataset, then monitor training until ready for inference.
+  source: https://api.pioneer.ai/.well-known/agent-skills/pioneer-fine-tune/SKILL.md
+  operations: [run_inference]
+- file: fastino-labs-pioneer-datasets.md
+  name: pioneer-datasets
+  description: List, inspect, upload, download, and delete labeled datasets on Pioneer, then pass a dataset name to a fine-tuning job.
+  source: https://api.pioneer.ai/.well-known/agent-skills/pioneer-datasets/SKILL.md
+  operations: []
+- file: fastino-labs-pioneer-evaluate.md
+  name: pioneer-evaluate
+  description: Evaluate a trained Pioneer model against a dataset to measure performance, then compare against baseline LLM models.
+  source: https://api.pioneer.ai/.well-known/agent-skills/pioneer-evaluate/SKILL.md
+  operations: []
+- file: fastino-labs-pioneer-synthetic-data.md
+  name: pioneer-synthetic-data
+  description: Generate synthetic NER, classification, or decoder training data using Pioneer's Felix engine.
+  source: https://api.pioneer.ai/.well-known/agent-skills/pioneer-synthetic-data/SKILL.md
+  operations: []

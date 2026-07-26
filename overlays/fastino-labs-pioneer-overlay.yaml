@@ -1,0 +1,29 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Pioneer Inference API
+  version: 1.0.0
+extends: openapi/pioneer-openapi-original.json
+actions:
+- target: $.info
+  update:
+    x-apievangelist-provider: fastino-labs
+    x-apievangelist-product: Pioneer
+    x-apievangelist-status-page: https://pioneerai.statuspage.io
+    x-apievangelist-docs: https://docs.pioneer.ai/api-reference
+    x-apievangelist-well-known-catalog: https://api.pioneer.ai/.well-known/api-catalog
+    x-apievangelist-agent-card: https://api.pioneer.ai/.well-known/agent-card.json
+    x-apievangelist-agent-skills: https://api.pioneer.ai/.well-known/agent-skills/index.json
+- target: $.info
+  update:
+    x-apievangelist-compat:
+      openai: https://api.pioneer.ai/v1
+      anthropic: https://api.pioneer.ai/v1
+- target: $
+  update:
+    x-apievangelist-rate-limit-signaling:
+      status: 429
+      headers: [Retry-After, X-RateLimit-Reason]
+      artifact: rate-limits/fastino-labs-rate-limits.yml
+- target: $
+  update:
+    x-apievangelist-error-catalog: errors/fastino-labs-error-codes.yml

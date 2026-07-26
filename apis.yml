@@ -1,26 +1,221 @@
 aid: fastino-labs
 name: Fastino Labs
-description: Fastino Labs is a company surfaced as a portfolio company of insight-partners and added to
-  the API Evangelist network as a stub for enrichment. This profile is a lead awaiting the enrichment
-  pipeline.
+description: >-
+  Fastino Labs is an applied research lab building production-ready small language models (SLMs)
+  for agentic AI — structured data extraction, classification, PII detection, and safety moderation.
+  Its Pioneer platform is an agentic fine-tuning and inference API that lets teams generate synthetic
+  training data, fine-tune GLiNER encoder models and open-source decoder LLMs (Qwen, Llama, DeepSeek,
+  Gemma), evaluate them against labeled datasets, and serve inference through native, OpenAI-compatible,
+  and Anthropic-compatible endpoints. Fastino also maintains the open-source GLiNER2 schema-based
+  information-extraction model and the GLiGuard safety-moderation model.
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: medium
+  source:
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://raw.githubusercontent.com/fastino-ai/mintlify-docs/main/images/pioneer-wordmark-dark.svg
 url: https://raw.githubusercontent.com/api-evangelist/fastino-labs/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
 x-backed-by:
 - insight-partners
-x-tier: stub
+x-tier: enriched
 x-tier-reason: portfolio-lead
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-07-19'
 tags:
 - Company
-apis: []
+- Artificial Intelligence
+- Machine Learning
+- Small Language Models
+- Fine-Tuning
+- Inference
+- Named Entity Recognition
+- Information Extraction
+- LLM
+- Agents
+- PII Detection
+- Model Training
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
+apis:
+- aid: fastino-labs:fastino-labs-anthropic-compat-api
+  name: Fastino Labs anthropic-compat API
+  description: >-
+    Anthropic-compatible endpoints. Use with the Anthropic SDK by setting base_url=https://api.pioneer.ai.
+  humanURL: https://docs.pioneer.ai/api-reference
+  baseURL: https://api.pioneer.ai
+  tags:
+  - anthropic-compat
+  properties:
+  - type: OpenAPI
+    url: openapi/fastino-labs-anthropic-compat-api-openapi.yml
+  - type: Authentication
+    url: authentication/fastino-labs-authentication.yml
+  - type: OAuthScopes
+    url: scopes/fastino-labs-scopes.yml
+  - type: ErrorCatalog
+    url: errors/fastino-labs-error-codes.yml
+  - type: Conventions
+    url: conventions/fastino-labs-conventions.yml
+  - type: DataModel
+    url: data-model/fastino-labs-data-model.yml
+  - type: RateLimits
+    url: rate-limits/fastino-labs-rate-limits.yml
+  - type: AgenticAccess
+    url: agentic-access/fastino-labs-agentic-access.yml
+- aid: fastino-labs:fastino-labs-inference-api
+  name: Fastino Labs inference API
+  description: >-
+    Pioneer-native inference endpoint (encoder NER/classification/extraction and decoder text generation).
+  humanURL: https://docs.pioneer.ai/api-reference
+  baseURL: https://api.pioneer.ai
+  tags:
+  - inference
+  properties:
+  - type: OpenAPI
+    url: openapi/fastino-labs-inference-api-openapi.yml
+  - type: Authentication
+    url: authentication/fastino-labs-authentication.yml
+  - type: OAuthScopes
+    url: scopes/fastino-labs-scopes.yml
+  - type: ErrorCatalog
+    url: errors/fastino-labs-error-codes.yml
+  - type: Conventions
+    url: conventions/fastino-labs-conventions.yml
+  - type: DataModel
+    url: data-model/fastino-labs-data-model.yml
+  - type: RateLimits
+    url: rate-limits/fastino-labs-rate-limits.yml
+  - type: AgenticAccess
+    url: agentic-access/fastino-labs-agentic-access.yml
+- aid: fastino-labs:fastino-labs-inference-history-api
+  name: Fastino Labs inference-history API
+  description: List and retrieve past inference records.
+  humanURL: https://docs.pioneer.ai/api-reference
+  baseURL: https://api.pioneer.ai
+  tags:
+  - inference-history
+  properties:
+  - type: OpenAPI
+    url: openapi/fastino-labs-inference-history-api-openapi.yml
+  - type: Authentication
+    url: authentication/fastino-labs-authentication.yml
+  - type: OAuthScopes
+    url: scopes/fastino-labs-scopes.yml
+  - type: ErrorCatalog
+    url: errors/fastino-labs-error-codes.yml
+  - type: Conventions
+    url: conventions/fastino-labs-conventions.yml
+  - type: DataModel
+    url: data-model/fastino-labs-data-model.yml
+  - type: RateLimits
+    url: rate-limits/fastino-labs-rate-limits.yml
+  - type: AgenticAccess
+    url: agentic-access/fastino-labs-agentic-access.yml
+- aid: fastino-labs:fastino-labs-openai-compat-api
+  name: Fastino Labs openai-compat API
+  description: >-
+    OpenAI-compatible endpoints. Use with the OpenAI SDK by setting base_url=https://api.pioneer.ai/v1.
+  humanURL: https://docs.pioneer.ai/api-reference
+  baseURL: https://api.pioneer.ai
+  tags:
+  - openai-compat
+  properties:
+  - type: OpenAPI
+    url: openapi/fastino-labs-openai-compat-api-openapi.yml
+  - type: Authentication
+    url: authentication/fastino-labs-authentication.yml
+  - type: OAuthScopes
+    url: scopes/fastino-labs-scopes.yml
+  - type: ErrorCatalog
+    url: errors/fastino-labs-error-codes.yml
+  - type: Conventions
+    url: conventions/fastino-labs-conventions.yml
+  - type: DataModel
+    url: data-model/fastino-labs-data-model.yml
+  - type: RateLimits
+    url: rate-limits/fastino-labs-rate-limits.yml
+  - type: AgenticAccess
+    url: agentic-access/fastino-labs-agentic-access.yml
 common:
 - type: Website
   url: https://www.fastino.ai/
+- type: DeveloperPortal
+  url: https://docs.pioneer.ai
+- type: Documentation
+  url: https://docs.pioneer.ai
+- type: APIReference
+  url: https://docs.pioneer.ai/api-reference
+- type: GettingStarted
+  url: https://docs.pioneer.ai/quickstart
+- type: Pricing
+  url: https://docs.pioneer.ai/pricing
+- type: SignUp
+  url: https://agent.pioneer.ai
+- type: Support
+  url: https://discord.gg/e99x4szUYS
+- type: Blog
+  url: https://www.fastino.ai/blog
+- type: GitHubOrganization
+  url: https://github.com/fastino-ai
+- type: StatusPage
+  url: https://pioneerai.statuspage.io
+- type: TermsOfService
+  url: https://agent.pioneer.ai/terms
+- type: PrivacyPolicy
+  url: https://agent.pioneer.ai/privacy
+- type: Authentication
+  url: authentication/fastino-labs-authentication.yml
+- type: OAuthScopes
+  url: scopes/fastino-labs-scopes.yml
+- type: Packages
+  url: packages/fastino-labs-packages.yml
+- type: SDKs
+  url: packages/fastino-labs-packages.yml
+- type: CLI
+  url: cli/fastino-labs-cli.yml
+- type: MCPServer
+  url: mcp/fastino-labs-mcp.yml
+- type: LLMsTxt
+  url: llms/fastino-labs-llms.txt
+- type: WellKnown
+  url: well-known/fastino-labs-well-known.yml
+- type: SecurityTxt
+  url: well-known/fastino-labs-security.txt
+- type: RateLimits
+  url: rate-limits/fastino-labs-rate-limits.yml
+- type: ErrorCatalog
+  url: errors/fastino-labs-error-codes.yml
+- type: Conventions
+  url: conventions/fastino-labs-conventions.yml
+- type: Lifecycle
+  url: lifecycle/fastino-labs-lifecycle.yml
+- type: Conformance
+  url: conformance/fastino-labs-conformance.yml
+- type: DomainSecurity
+  url: security/fastino-labs-domain-security.yml
+- type: VulnerabilityDisclosure
+  url: security/fastino-labs-vulnerability-disclosure.yml
+- type: Security
+  url: https://fastino.ai/.well-known/security.txt
+- type: AgenticAccess
+  url: agentic-access/fastino-labs-agentic-access.yml
+- type: AgentSkill
+  url: skills/_index.yml
+x-enrichment:
+  date: '2026-07-19'
+  status: backfilled
+  pass: local-v1
+  note: backfilled from .gitignore signal + verified work evidence

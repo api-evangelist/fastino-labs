@@ -1,0 +1,37 @@
+generated: '2026-07-19'
+method: derived
+source: openapi/pioneer-openapi-original.json + docs.pioneer.ai + well-known/
+standards:
+- id: openapi-3.1
+  conforms: true
+  evidence: openapi/pioneer-openapi-original.json declares openapi 3.1.0
+- id: openai-chat-completions-compatible
+  conforms: true
+  evidence: POST /v1/chat/completions, /v1/completions, GET /v1/models drop-in OpenAI-compatible layer
+- id: anthropic-messages-compatible
+  conforms: true
+  evidence: POST /v1/messages Anthropic-compatible layer
+- id: oauth2-oidc
+  conforms: true
+  evidence: /.well-known/openid-configuration + oauth-authorization-server (Supabase authorization-code, PKCE S256)
+- id: rfc9116-security-txt
+  conforms: true
+  evidence: /.well-known/security.txt present with Contact/Policy/Expires
+- id: rfc9727-api-catalog
+  conforms: true
+  evidence: /.well-known/api-catalog linkset (service-desc/doc/meta)
+- id: rfc9728-oauth-protected-resource
+  conforms: true
+  evidence: /.well-known/oauth-protected-resource metadata
+- id: a2a-agent-card
+  conforms: true
+  evidence: /.well-known/agent-card.json A2A Agent Card protocolVersion 0.3.0
+- id: agent-skills-discovery-0.2.0
+  conforms: true
+  evidence: /.well-known/agent-skills/index.json (5 hosted SKILL.md)
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: error envelope is a bare {detail} field, not application/problem+json
+- id: sse-streaming
+  conforms: true
+  evidence: chat completions return text/event-stream when stream=true

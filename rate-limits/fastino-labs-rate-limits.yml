@@ -1,0 +1,46 @@
+generated: '2026-07-19'
+method: searched
+source: https://docs.pioneer.ai/api-reference/rate-limits
+signaling:
+  status: 429
+  headers:
+  - Retry-After
+  - X-RateLimit-Reason
+  reason_values:
+  - daily_spend_cap_exceeded
+  note: >-
+    Standard rate-limit 429s clear by respecting Retry-After. Spending-cap 429s
+    (X-RateLimit-Reason: daily_spend_cap_exceeded) reset at 00:00 UTC and are not
+    resolved by waiting.
+rate_limits:
+- scope: global-default
+  per: ip
+  limit_count: 1000
+  window: minute
+- scope: global-default
+  per: ip
+  limit_count: 10000
+  window: hour
+- scope: POST /inference
+  per: user
+  limit_count: 1200
+  window: minute
+- scope: chat/completion endpoints
+  per: user
+  limit_count: 200
+  window: minute
+- scope: POST /gliner-2/*
+  per: user
+  limit_count: 15000
+  window: minute
+- scope: POST /generate/*
+  per: user
+  limit_count: 120
+  window: minute
+- scope: POST /felix/training-jobs
+  per: user
+  limit_count: 20
+  window: minute
+spending_cap:
+  note: A daily spending cap enforces a 429 once the remaining balance is exhausted; resets 00:00 UTC.
+contact: support@fastino.ai

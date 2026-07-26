@@ -1,0 +1,44 @@
+generated: '2026-07-19'
+method: searched
+source: live probe of /.well-known/ on api.pioneer.ai and www.fastino.ai
+hosts:
+- host: https://api.pioneer.ai
+  documents:
+  - path: /.well-known/openid-configuration
+    status: 200
+    file: fastino-labs-openid-configuration.json
+    note: OIDC discovery; issuer api.pioneer.ai, delegated to Supabase auth
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    file: fastino-labs-oauth-authorization-server.json
+    note: RFC 8414 authorization server metadata
+  - path: /.well-known/oauth-protected-resource
+    status: 200
+    file: fastino-labs-oauth-protected-resource.json
+    note: RFC 9728 protected resource metadata
+  - path: /.well-known/api-catalog
+    status: 200
+    file: fastino-labs-api-catalog.json
+    note: RFC 9727 API catalog / linkset (points to OpenAPI, agent-card, agent-skills)
+  - path: /.well-known/agent-card.json
+    status: 200
+    file: fastino-labs-agent-card.json
+    note: A2A Agent Card (protocolVersion 0.3.0)
+  - path: /.well-known/agent-skills/index.json
+    status: 200
+    file: null
+    note: Agent Skills discovery index (RFC v0.2.0); 5 hosted SKILL.md captured under skills/
+  - path: /.well-known/ai-plugin.json
+    status: 404
+- host: https://www.fastino.ai
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    file: fastino-labs-security.txt
+    note: RFC 9116; Canonical https://fastino.ai/.well-known/security.txt
+  - path: /.well-known/openid-configuration
+    status: 308
+  - path: /.well-known/api-catalog
+    status: 308
+  - path: /.well-known/ai-plugin.json
+    status: 308

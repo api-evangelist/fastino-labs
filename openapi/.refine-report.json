@@ -1,0 +1,20 @@
+{
+  "provider": "fastino-labs",
+  "sources": [
+    "fastino-labs-anthropic-compat-api-openapi.yml",
+    "fastino-labs-inference-api-openapi.yml",
+    "fastino-labs-inference-history-api-openapi.yml",
+    "fastino-labs-openai-compat-api-openapi.yml"
+  ],
+  "outputs": [
+    "fastino-labs-anthropic-compat-api-openapi.yml",
+    "fastino-labs-inference-api-openapi.yml",
+    "fastino-labs-inference-history-api-openapi.yml",
+    "fastino-labs-openai-compat-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

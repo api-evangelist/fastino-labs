@@ -1,0 +1,55 @@
+generated: '2026-07-19'
+method: derived
+source: openapi/pioneer-openapi-original.json
+notes: >-
+  Entity graph derived from OpenAPI component schemas and id-reference fields.
+  Only the inference-surface entities are present in the published OpenAPI; the
+  dataset/training-job/evaluation entities (felix/*) are documented but not in
+  this spec, so they are captured here as referenced-but-external.
+entities:
+- name: InferenceRecord
+  schema: InferenceRecord
+  id_field: id
+  key_fields: [model_id, model_name, task, input, output, status, created_at, project_id, training_job_id, user_id]
+  relationships:
+  - type: belongs_to
+    target: Model
+    via: model_id
+  - type: belongs_to
+    target: TrainingJob
+    via: training_job_id
+    external: true
+  - type: belongs_to
+    target: Project
+    via: project_id
+    external: true
+  - type: belongs_to
+    target: User
+    via: user_id
+    external: true
+  - type: has_one
+    target: InferenceFeedback
+    via: id
+- name: InferenceFeedback
+  schema: InferenceFeedbackRequest
+  key_fields: [verdict, corrected_output, notes]
+  relationships:
+  - type: belongs_to
+    target: InferenceRecord
+    via: inference_id (path)
+- name: Model
+  schema: ModelListResponse.data[]
+  relationships:
+  - type: has_many
+    target: InferenceRecord
+    via: model_id
+referenced_external_entities:
+- name: TrainingJob
+  documented_at: https://docs.pioneer.ai/api-reference/training-jobs
+  endpoints: [POST /felix/training-jobs, GET /felix/training-jobs/:id]
+- name: Dataset
+  documented_at: https://docs.pioneer.ai/api-reference/datasets
+  endpoints: [GET /felix/datasets, GET /felix/datasets/:name]
+- name: Evaluation
+  documented_at: https://docs.pioneer.ai/api-reference/evaluations
+  endpoints: [POST /felix/evaluations, GET /felix/evaluations/:id]

@@ -1,0 +1,52 @@
+# Pioneer
+
+> Docs for building, fine-tuning, evaluating, and deploying models with Pioneer.
+
+## Docs
+
+- [CLI installation](https://docs.pioneer.ai/CLI-Installation.md): Install the Pioneer CLI, authenticate with an API key, and verify your terminal setup.
+- [Pioneer API authentication: generate and use API keys](https://docs.pioneer.ai/api-reference/authentication.md): How to generate a Pioneer API key, pass it in the X-API-Key header, and manage keys programmatically including creation, listing, and revocation.
+- [Dataset management API — list, inspect, and delete](https://docs.pioneer.ai/api-reference/datasets.md): List all datasets in your Pioneer account, inspect version history and example counts, and delete datasets you no longer need. Storage is free on all plans.
+- [Pioneer API error codes: 401, 402, 404, 422, 429, 500](https://docs.pioneer.ai/api-reference/errors.md): HTTP status codes returned by the Pioneer API — 401, 402, 404, 422, 429, and 500 — with plain-language explanations and steps to resolve each one.
+- [Evaluation API — measure model F1 before deploying](https://docs.pioneer.ai/api-reference/evaluations.md): Run Pioneer evaluations against labeled datasets to measure F1, precision, and recall with per-entity breakdowns before promoting a model to production.
+- [Anthropic-compatible POST /v1/messages on Pioneer API](https://docs.pioneer.ai/api-reference/inference/anthropic-compatible.md): Use Pioneer as a drop-in Anthropic SDK replacement. Point base_url to https://api.pioneer.ai/v1 and use your Pioneer API key to access fine-tuned models.
+- [Inference history and feedback endpoints on Pioneer](https://docs.pioneer.ai/api-reference/inference/history.md): List Pioneer inference history, filter by model or project, retrieve individual results, and submit corrections to improve your model via Adaptive Inference.
+- [OpenAI-compatible chat and completions on Pioneer API](https://docs.pioneer.ai/api-reference/inference/openai-compatible.md): Drop-in OpenAI replacement on Pioneer. Set base_url to https://api.pioneer.ai/v1, use your Pioneer key, and all SDK methods including streaming work unchanged.
+- [POST /inference — Pioneer native inference endpoint](https://docs.pioneer.ai/api-reference/inference/pioneer.md): POST /inference runs schema-based predictions on encoder or decoder models. Accepts model_id, text, schema with entities or classifications, and a threshold.
+- [Set up Opus 4.8 in 60s](https://docs.pioneer.ai/api-reference/integrating-with-opus-4-8.md)
+- [Pioneer REST API: base URL, auth, and quick reference](https://docs.pioneer.ai/api-reference/overview.md): The Pioneer REST API overview: base URL, authentication, the recommended 5-step workflow from dataset to inference, and links to all endpoint group references.
+- [Prompt Caching on Inference](https://docs.pioneer.ai/api-reference/prompt-caching.md): How prompt caching works on Pioneer, what qualifies for caching, how cache tokens are billed, and where to view cache usage.
+- [Rate Limits](https://docs.pioneer.ai/api-reference/rate-limits.md)
+- [Synthetic data API — POST /generate and label-existing](https://docs.pioneer.ai/api-reference/synthetic-data.md): Start Pioneer data generation jobs for NER, classification, or decoder tasks, poll job status, and auto-label existing text without manual annotation.
+- [Training jobs API — start, poll, stop, and download](https://docs.pioneer.ai/api-reference/training-jobs.md): Submit Pioneer fine-tuning jobs, poll status, stream logs, list checkpoints, download weights, and stop or delete jobs. Supports LoRA and full fine-tuning.
+- [How to authenticate your requests with Pioneer API](https://docs.pioneer.ai/authentication.md): Generate an API key from your Pioneer account, then include it in the X-API-Key header on every request. No OAuth or token refresh required.
+- [Claude Code](https://docs.pioneer.ai/claude-code.md): Point Claude Code at Pioneer for multi-model inference, router-backed pioneer/auto, and full /model picker support.
+- [Codex](https://docs.pioneer.ai/codex.md)
+- [Pioneer datasets: create, version, inspect, and delete](https://docs.pioneer.ai/concepts/datasets.md): Pioneer stores and versions your training datasets automatically. Learn how to create them via generation or auto-labeling, then list, inspect, and delete them.
+- [Model evaluations in Pioneer: F1, precision, recall](https://docs.pioneer.ai/concepts/evaluations.md): Run Pioneer evaluations to measure F1, precision, and recall on a labeled dataset before deploying your fine-tuned model to production traffic.
+- [GLiGuard: Safety Moderation SLM](https://docs.pioneer.ai/concepts/g-li-guard.md): Run GLiGuard, our open-source 300M safety moderation model, on Pioneer.
+- [GLiNER2-PII: PII Detection SLM](https://docs.pioneer.ai/concepts/g-li-ner-2-pii.md): Run GLiNER2-PII, our open-source multilingual PII detection model, on Pioneer.
+- [Inference](https://docs.pioneer.ai/concepts/inference.md)
+- [Pioneer model catalog: encoders, decoders, and inference](https://docs.pioneer.ai/concepts/models.md): Browse Pioneer's encoder (GLiNER) and decoder (LLM) models for fine-tuning and inference. Covers on-demand vs. serverless and how to query the live catalog.
+- [Model Router](https://docs.pioneer.ai/concepts/router.md)
+- [Pioneer training jobs: lifecycle, metrics, and weights](https://docs.pioneer.ai/concepts/training.md): Understand how Pioneer training jobs work — from submitting a job and polling status to reading metrics, stopping jobs, and downloading trained model weights.
+- [Cursor](https://docs.pioneer.ai/cursor.md): Configure Cursor's chat panel to use Pioneer's OpenAI-compatible API, add custom models, and switch between them from the model picker.
+- [Pioneer FAQ: plans, data privacy, storage, and teams](https://docs.pioneer.ai/faq.md): Answers to common questions about Pioneer plans, storage costs, data training practices, team collaboration, and special pricing for nonprofits and students.
+- [Adaptive Inference: automatic continuous retraining](https://docs.pioneer.ai/guides/adaptive-inference.md): Pioneer's Adaptive Inference monitors live traffic, collects corrections, retrains a new checkpoint, and promotes it automatically when performance improves.
+- [Use Pioneer with AI coding agents via Agent Skills](https://docs.pioneer.ai/guides/agent-skills.md): Add a SKILL.md file to your AI coding agent so Cursor, Claude Code, or similar agents can manage Pioneer datasets, training, and inference autonomously.
+- [Fine-tune a GLiNER text classification model from data to inference](https://docs.pioneer.ai/guides/fine-tune-classification.md): Train a custom single- or multi-label text classification model on your data using Pioneer's GLiNER encoder models, from dataset prep through evaluation and inference.
+- [Fine-tune a GLiNER structured extraction model from data to inference](https://docs.pioneer.ai/guides/fine-tune-extraction.md): Train a custom JSON-structured extraction model on your data using Pioneer's GLiNER encoder models — pull invoices, forms, and any structured record out of unstructured text.
+- [Fine-tune an open-source LLM on Pioneer — SFT, GRPO, and DPO](https://docs.pioneer.ai/guides/fine-tune-llm.md): Train a custom large language model with LoRA fine-tuning on Qwen, Llama, DeepSeek, or Gemma base models. Pioneer supports supervised fine-tuning (SFT) and the reinforcement-learning methods GRPO and DPO through a single training endpoint.
+- [Fine-tune a GLiNER NER model from data to inference](https://docs.pioneer.ai/guides/fine-tune-ner.md): Train a custom Named Entity Recognition model on your data using Pioneer's GLiNER encoder models, from dataset prep through evaluation and inference.
+- [Generate synthetic training data for NER and LLM tasks](https://docs.pioneer.ai/guides/synthetic-data.md): Use Pioneer's data generation API to create labeled NER, classification, and decoder training examples without manual annotation, or auto-label existing text.
+- [Hermes Agent](https://docs.pioneer.ai/hermes.md): Configure Hermes Agent with Pioneer using a one-time setup command that imports a filtered model catalog and defaults to pioneer/auto routing.
+- [Drop us in. We'll ship the models.](https://docs.pioneer.ai/introduction.md): Pioneer spots where your model fails, then quietly retrains it on your own data. No MLOps team required.
+- [Legacy pricing (before July 1, 2026)](https://docs.pioneer.ai/legacy-pricing.md)
+- [OpenClaw](https://docs.pioneer.ai/openclaw.md): Configure OpenClaw to use Pioneer's OpenAI-compatible endpoint, discover models via /v1/models, and run the local gateway with Pioneer Auto.
+- [OpenCode](https://docs.pioneer.ai/opencode.md): Pioneer is an inference provider on OpenCode, making integration simple to set up.
+- [Pioneer plans: Pro and Enterprise](https://docs.pioneer.ai/pricing.md): Compare Pioneer's Pro and Enterprise plans. Start with $40 of platform credits on Pro plans and scale to advanced features on Enterprise as your needs grow.
+- [Pioneer quickstart: from signup to your first inference](https://docs.pioneer.ai/quickstart.md): Go from zero to a working Pioneer inference call in minutes. Generate an API key, browse available models, and run your first NER prediction.
+
+## OpenAPI Specs
+
+- [openapi](https://docs.pioneer.ai/openapi.json)

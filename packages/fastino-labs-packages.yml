@@ -1,0 +1,27 @@
+generated: '2026-07-19'
+method: searched
+source: npm + PyPI registry lookups; github.com/fastino-ai
+packages:
+- language: javascript
+  registry: npm
+  name: "@fastino-ai/pioneer-cli"
+  version: 0.3.0
+  url: https://www.npmjs.com/package/@fastino-ai/pioneer-cli
+  install: npm install -g @fastino-ai/pioneer-cli
+  description: Pioneer CLI - AI training platform client (auth, datasets, jobs, models)
+  official: true
+- language: python
+  registry: pypi
+  name: gliner2
+  url: https://pypi.org/project/gliner2/
+  install: pip install gliner2
+  description: "GLiNER2: Unified Schema-Based Information Extraction and Text Classification"
+  repository: https://github.com/fastino-ai/GLiNER2
+  official: true
+- language: python
+  registry: pypi
+  name: gliner
+  url: https://pypi.org/project/gliner/
+  install: pip install gliner
+  description: Generalist model for Named Entity Recognition (GLiNER family; upstream of Fastino's GLiNER2)
+  official: false

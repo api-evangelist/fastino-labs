@@ -1,0 +1,58 @@
+generated: '2026-07-19'
+method: searched
+source: >-
+  https://docs.pioneer.ai/api-reference/overview,
+  https://docs.pioneer.ai/api-reference/authentication,
+  https://docs.pioneer.ai/api-reference/rate-limits,
+  https://docs.pioneer.ai/api-reference/errors
+base_url: https://api.pioneer.ai
+compat_base_url: https://api.pioneer.ai/v1
+authentication:
+  style: api-key + bearer
+  header: X-API-Key
+  key_prefix: pio_sk_
+  alt: 'Authorization: Bearer <pio_sk_ key or Supabase JWT>'
+  oauth: OIDC/OAuth2 authorization-code via Supabase (see well-known/ + scopes/); API key is the primary path.
+  docs: https://docs.pioneer.ai/api-reference/authentication
+idempotency:
+  supported: false
+  note: No idempotency-key header or parameter is documented or present in the OpenAPI.
+pagination:
+  supported: true
+  styles:
+  - style: offset
+    params: [limit, offset]
+    response_fields: [total, limit, offset]
+    used_by: GET /inferences (InferenceListResponse)
+  - style: cursor
+    response_fields: [has_more, first_id, last_id]
+    used_by: GET /v1/models (ModelListResponse, OpenAI-style)
+versioning:
+  style: uri-path
+  compat_prefix: /v1
+request_tracing:
+  request_id_header: null
+  note: No request-id/trace header documented.
+error_envelope:
+  shape: '{ "detail": "<string|object>" }'
+  reference: errors/fastino-labs-error-codes.yml
+rate_limit_signaling:
+  status: 429
+  headers:
+  - Retry-After
+  - X-RateLimit-Reason
+  reason_values:
+  - daily_spend_cap_exceeded
+  reference: rate-limits/fastino-labs-rate-limits.yml
+  note: Spending-cap 429s do not resolve by waiting Retry-After; they reset at 00:00 UTC.
+prompt_caching:
+  supported: true
+  docs: https://docs.pioneer.ai/api-reference/prompt-caching
+compatibility:
+  openai: 'POST /v1/chat/completions, POST /v1/completions, GET /v1/models (base_url https://api.pioneer.ai/v1)'
+  anthropic: 'POST /v1/messages (base_url https://api.pioneer.ai/v1)'
+cross_links:
+  authentication: authentication/fastino-labs-authentication.yml
+  errors: errors/fastino-labs-error-codes.yml
+  lifecycle: lifecycle/fastino-labs-lifecycle.yml
+  rate_limits: rate-limits/fastino-labs-rate-limits.yml

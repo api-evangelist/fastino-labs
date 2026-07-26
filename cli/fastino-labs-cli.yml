@@ -1,0 +1,32 @@
+generated: '2026-07-19'
+method: searched
+source: https://docs.pioneer.ai/CLI-Installation
+binary: pioneer
+package: "@fastino-ai/pioneer-cli"
+install:
+- method: npm
+  command: npm install -g @fastino-ai/pioneer-cli
+- method: prereq
+  command: curl -fsSL https://bun.sh/install | bash
+  note: Requires Bun 1.1.0+ (plus Node.js/npm); macOS or Linux.
+authentication:
+  interactive: pioneer auth login
+  status: pioneer auth status
+  env: PIONEER_API_KEY
+  config_file: ~/.pioneer/config.json
+verify:
+- pioneer --version
+- pioneer --help
+command_groups:
+- name: auth
+  purpose: Log in, check authentication status.
+  commands: [login, status]
+- name: model
+  purpose: Browse the base-model catalog.
+  commands: [base-models]
+- name: dataset
+  purpose: Manage datasets.
+  commands: [list]
+notes: >-
+  Top-level subcommands documented: auth, model, dataset. The CLI mirrors the
+  Pioneer REST API (datasets, jobs, models, inference). Binary is `pioneer`.

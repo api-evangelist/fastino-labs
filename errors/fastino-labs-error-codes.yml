@@ -1,0 +1,36 @@
+generated: '2026-07-19'
+method: searched
+source: https://docs.pioneer.ai/api-reference/errors
+derived_from: openapi/pioneer-openapi-original.json
+format: detail-envelope
+envelope:
+  shape: '{ "detail": "<string|object>" }'
+  field: detail
+  note: >-
+    Pioneer returns a simple JSON error envelope with a single `detail` field
+    (string message or structured object). Not RFC 9457 problem+json.
+errors:
+- status: 401
+  title: Unauthorized
+  meaning: The request did not include a valid API key, or the key has been revoked.
+  remediation: Verify the X-API-Key header is present with current credentials; generate a new key at Settings -> API Keys.
+- status: 402
+  title: Payment Required
+  meaning: The account does not have sufficient credits to complete the request.
+  remediation: Add credits or upgrade your plan via Settings -> Billing on pioneer.ai.
+- status: 404
+  title: Not Found
+  meaning: The requested resource does not exist (misspelled IDs/names or deleted resources).
+  remediation: Verify the ID/name in the request path; use the corresponding GET list endpoint to confirm existence.
+- status: 422
+  title: Unprocessable Entity
+  meaning: The request body failed validation (missing fields, wrong types, out-of-range values).
+  remediation: Review the error message for the specific field; common issues include missing base_model or invalid task_type.
+- status: 429
+  title: Too Many Requests
+  meaning: Rate limit exceeded, or the daily spending cap was hit.
+  remediation: Respect the Retry-After header before retrying. Note X-RateLimit-Reason=daily_spend_cap_exceeded errors clear at 00:00 UTC and do not resolve by waiting the Retry-After window.
+- status: 500
+  title: Internal Server Error
+  meaning: An unexpected error occurred on Pioneer's servers, unrelated to the request.
+  remediation: Retry after a brief delay; check https://pioneerai.statuspage.io for service status or contact support@fastino.ai.

@@ -1,0 +1,39 @@
+generated: '2026-07-19'
+method: searched
+status: published
+notes: >-
+  Pioneer's Mintlify docs host a Model Context Protocol server at
+  https://docs.pioneer.ai/mcp (streamable HTTP; GET returns 405, POST/MCP handshake
+  is the supported method). The docs.json declares "mcp" as a contextual option.
+  The tools[] below are DERIVED candidates from the Pioneer Inference OpenAPI
+  operations for an API-surface MCP server; they are not an official published tool list.
+server:
+  name: pioneer-docs
+  transport: http
+  url: https://docs.pioneer.ai/mcp
+  description: Mintlify-hosted documentation MCP server for the Pioneer docs.
+tools:
+- name: run_inference
+  description: Run inference (Pioneer native) - schema-based predictions on encoder or decoder models.
+  source_operation: openapi/pioneer-openapi-original.json#run_inference
+- name: create_chat_completion
+  description: OpenAI-compatible chat completions.
+  source_operation: openapi/pioneer-openapi-original.json#create_chat_completion
+- name: create_text_completion
+  description: OpenAI-compatible text completions.
+  source_operation: openapi/pioneer-openapi-original.json#create_text_completion
+- name: list_models
+  description: List available models.
+  source_operation: openapi/pioneer-openapi-original.json#list_models
+- name: create_message
+  description: Anthropic-compatible messages.
+  source_operation: openapi/pioneer-openapi-original.json#create_message
+- name: list_inferences
+  description: List inference history.
+  source_operation: openapi/pioneer-openapi-original.json#list_inferences
+- name: get_inference
+  description: Get an inference record.
+  source_operation: openapi/pioneer-openapi-original.json#get_inference
+- name: submit_inference_feedback
+  description: Submit inference feedback.
+  source_operation: openapi/pioneer-openapi-original.json#submit_inference_feedback

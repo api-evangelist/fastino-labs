@@ -1,0 +1,26 @@
+generated: '2026-07-19'
+method: searched
+source: https://api.pioneer.ai/.well-known/openid-configuration
+docs: https://api.pioneer.ai/.well-known/oauth-protected-resource
+note: >-
+  Pioneer delegates OAuth2/OIDC to a Supabase authorization server. The Pioneer
+  REST API is primarily accessed with an X-API-Key (pio_sk_) key; the OAuth path
+  exposes only the standard OIDC scopes below. The OpenAPI itself declares the
+  bearer token as http/bearer (JWT), not an oauth2 scheme, so no resource-level
+  scopes are published beyond these.
+schemes:
+- name: Supabase-OIDC
+  type: oauth2
+  flow: authorizationCode
+  authorizationUrl: https://pwgztilbkupvjmomwbjr.supabase.co/auth/v1/authorize
+  tokenUrl: https://pwgztilbkupvjmomwbjr.supabase.co/auth/v1/token
+  pkce: [S256, plain]
+scopes:
+- scope: openid
+  description: OpenID Connect authentication; issue an ID token.
+- scope: profile
+  description: Access basic profile claims.
+- scope: email
+  description: Access the user's email claim.
+- scope: offline_access
+  description: Issue a refresh token for long-lived access.

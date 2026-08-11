@@ -150,6 +150,8 @@ apis:
   - type: AgenticAccess
     url: agentic-access/fastino-labs-agentic-access.yml
 common:
+- type: Overlay
+  url: overlays/fastino-labs-pioneer-overlay.yaml
 - type: Website
   url: https://www.fastino.ai/
 - type: DeveloperPortal

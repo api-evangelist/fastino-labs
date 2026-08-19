@@ -1,0 +1,153 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Pioneer Inference anthropic-compat inference-history API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-API-Key",
+      "value": "{{X-API-Key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "inference-history",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List inference history",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.pioneer.ai/inferences",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum records to return."
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "Records to skip for pagination."
+              },
+              {
+                "name": "model_id",
+                "value": "",
+                "type": "query",
+                "description": "Filter by model ID."
+              },
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "query",
+                "description": "Filter by project ID."
+              },
+              {
+                "name": "training_job_id",
+                "value": "",
+                "type": "query",
+                "description": "Filter by training job UUID."
+              },
+              {
+                "name": "task",
+                "value": "",
+                "type": "query",
+                "description": "Filter by task type (extract_entities, classify_text, extract_json, generate)."
+              },
+              {
+                "name": "latency_min",
+                "value": "",
+                "type": "query",
+                "description": "Minimum latency in ms."
+              },
+              {
+                "name": "latency_max",
+                "value": "",
+                "type": "query",
+                "description": "Maximum latency in ms."
+              },
+              {
+                "name": "llmaj_score_min",
+                "value": "",
+                "type": "query",
+                "description": "Minimum LLM-as-Judge score [0.0, 1.0]."
+              },
+              {
+                "name": "llmaj_score_max",
+                "value": "",
+                "type": "query",
+                "description": "Maximum LLM-as-Judge score [0.0, 1.0]."
+              },
+              {
+                "name": "since",
+                "value": "",
+                "type": "query",
+                "description": "Return records created at or after this ISO 8601 timestamp."
+              },
+              {
+                "name": "until",
+                "value": "",
+                "type": "query",
+                "description": "Return records created at or before this ISO 8601 timestamp."
+              }
+            ]
+          },
+          "docs": "Paginated list of past inference records for the authenticated user's team. Supports filtering by model, project, task type, latency range, and LLM-as-Judge score."
+        },
+        {
+          "info": {
+            "name": "Get an inference record",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.pioneer.ai/inferences/:inference_id",
+            "params": [
+              {
+                "name": "inference_id",
+                "value": "",
+                "type": "path",
+                "description": "The inference record UUID returned in `inference_id` on any inference response."
+              }
+            ]
+          },
+          "docs": "Retrieve a single inference record by ID. Includes LLM-as-Judge verdict and score when judging has completed (fields are null until then)."
+        },
+        {
+          "info": {
+            "name": "Submit inference feedback",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.pioneer.ai/inferences/:inference_id/feedback",
+            "params": [
+              {
+                "name": "inference_id",
+                "value": "",
+                "type": "path",
+                "description": "The inference record UUID to annotate."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Submit a human correction on a past inference. Corrections are used as labeled examples for Adaptive Inference — Pioneer's continuous improvement loop that retrains your model on corrected live-traffic examples."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

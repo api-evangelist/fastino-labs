@@ -1,12 +1,10 @@
 generated: '2026-07-19'
 method: searched
 status: published
-notes: >-
-  Pioneer's Mintlify docs host a Model Context Protocol server at
-  https://docs.pioneer.ai/mcp (streamable HTTP; GET returns 405, POST/MCP handshake
-  is the supported method). The docs.json declares "mcp" as a contextual option.
-  The tools[] below are DERIVED candidates from the Pioneer Inference OpenAPI
-  operations for an API-surface MCP server; they are not an official published tool list.
+notes: Pioneer's Mintlify docs host a Model Context Protocol server at https://docs.pioneer.ai/mcp (streamable
+  HTTP; GET returns 405, POST/MCP handshake is the supported method). The docs.json declares "mcp" as
+  a contextual option. The tools[] below are DERIVED candidates from the Pioneer Inference OpenAPI operations
+  for an API-surface MCP server; they are not an official published tool list.
 server:
   name: pioneer-docs
   transport: http
@@ -37,3 +35,9 @@ tools:
 - name: submit_inference_feedback
   description: Submit inference feedback.
   source_operation: openapi/pioneer-openapi-original.json#submit_inference_feedback
+deployment:
+  mode: remote
+  verified: searched
+  tools: 8
+  checked: '2026-08-12'
+  source: catalog MCP census

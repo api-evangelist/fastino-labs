@@ -1,0 +1,56 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Pioneer Inference anthropic-compat openai-compat API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-API-Key",
+      "value": "{{X-API-Key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "openai-compat",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Chat completions (OpenAI-compatible)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.pioneer.ai/v1/chat/completions",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "OpenAI-compatible chat completions endpoint. Works with the OpenAI Python SDK by setting `base_url=\"https://api.pioneer.ai/v1\"`. Set `stream=true` for SSE streaming. The response includes a `x_pioneer` extension field with `inference_id` and `routed_model`."
+        },
+        {
+          "info": {
+            "name": "Text completions (OpenAI-compatible)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.pioneer.ai/v1/completions",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "OpenAI-compatible legacy text completions endpoint. Accepts a `prompt` string and returns a completion. Set `stream=true` for SSE streaming."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

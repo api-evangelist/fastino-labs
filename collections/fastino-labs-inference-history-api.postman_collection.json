@@ -1,0 +1,843 @@
+{
+  "item": [
+    {
+      "id": "1a06ad76-bda0-41b9-be04-aefc1bf989a9",
+      "name": "inference-history",
+      "description": {
+        "content": "List and retrieve past inference records.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "b57906c0-594f-486d-8150-fe073a9c10c7",
+          "name": "List inference history",
+          "request": {
+            "name": "List inference history",
+            "description": {
+              "content": "Paginated list of past inference records for the authenticated user's team. Supports filtering by model, project, task type, latency range, and LLM-as-Judge score.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "inferences"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "100",
+                  "description": "Maximum records to return."
+                },
+                {
+                  "disabled": false,
+                  "key": "offset",
+                  "value": "0",
+                  "description": "Records to skip for pagination."
+                },
+                {
+                  "disabled": false,
+                  "key": "model_id",
+                  "value": "<string>",
+                  "description": "Filter by model ID."
+                },
+                {
+                  "disabled": false,
+                  "key": "project_id",
+                  "value": "<string>",
+                  "description": "Filter by project ID."
+                },
+                {
+                  "disabled": false,
+                  "key": "training_job_id",
+                  "value": "<string>",
+                  "description": "Filter by training job UUID."
+                },
+                {
+                  "disabled": false,
+                  "key": "task",
+                  "value": "<string>",
+                  "description": "Filter by task type (extract_entities, classify_text, extract_json, generate)."
+                },
+                {
+                  "disabled": false,
+                  "key": "latency_min",
+                  "value": "<number>",
+                  "description": "Minimum latency in ms."
+                },
+                {
+                  "disabled": false,
+                  "key": "latency_max",
+                  "value": "<number>",
+                  "description": "Maximum latency in ms."
+                },
+                {
+                  "disabled": false,
+                  "key": "llmaj_score_min",
+                  "value": "<number>",
+                  "description": "Minimum LLM-as-Judge score [0.0, 1.0]."
+                },
+                {
+                  "disabled": false,
+                  "key": "llmaj_score_max",
+                  "value": "<number>",
+                  "description": "Maximum LLM-as-Judge score [0.0, 1.0]."
+                },
+                {
+                  "disabled": false,
+                  "key": "since",
+                  "value": "<dateTime>",
+                  "description": "Return records created at or after this ISO 8601 timestamp."
+                },
+                {
+                  "disabled": false,
+                  "key": "until",
+                  "value": "<dateTime>",
+                  "description": "Return records created at or before this ISO 8601 timestamp."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "6e41ef87-3ea4-495d-9a5c-65622d6f0f4c",
+              "name": "Paginated list of inference records.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "inferences"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "model_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "project_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "training_job_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "task",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "latency_min",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "latency_max",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "llmaj_score_min",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "llmaj_score_max",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "since",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "until",
+                      "value": "<dateTime>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"inferences\": [\n    {\n      \"id\": \"string\",\n      \"user_id\": \"string\",\n      \"model_id\": \"string\",\n      \"input\": \"string\",\n      \"source\": \"api\",\n      \"status\": \"failed\",\n      \"created_at\": \"2025-10-18T14:21:50.174Z\",\n      \"model_name\": \"string\",\n      \"task\": \"string\",\n      \"output\": \"\",\n      \"latency_ms\": 5722,\n      \"tokens\": 2085,\n      \"input_tokens\": 496,\n      \"output_tokens\": 6063,\n      \"cache_read_tokens\": 303,\n      \"cache_write_tokens\": 9619,\n      \"error_type\": \"model_not_found\",\n      \"error_message\": \"string\",\n      \"project_id\": \"string\",\n      \"training_job_id\": \"string\",\n      \"provider\": \"string\",\n      \"base_model\": \"string\",\n      \"metadata\": {},\n      \"human_verdict\": \"incorrect\",\n      \"human_corrected_output\": \"\",\n      \"human_feedback_notes\": \"string\",\n      \"human_feedback_at\": \"1976-03-15T02:18:58.152Z\",\n      \"llmaj_verdict\": \"fail\",\n      \"llmaj_score\": 8058.682647574899,\n      \"llmaj_judged_at\": \"2013-03-27T09:01:43.175Z\",\n      \"llmaj_reasoning\": \"string\"\n    },\n    {\n      \"id\": \"string\",\n      \"user_id\": \"string\",\n      \"model_id\": \"string\",\n      \"input\": \"string\",\n      \"source\": \"ui\",\n      \"status\": \"failed\",\n      \"created_at\": \"1977-04-22T13:36:19.675Z\",\n      \"model_name\": \"string\",\n      \"task\": \"string\",\n      \"output\": \"\",\n      \"latency_ms\": 7319,\n      \"tokens\": 2862,\n      \"input_tokens\": 1617,\n      \"output_tokens\": 2069,\n      \"cache_read_tokens\": 977,\n      \"cache_write_tokens\": 5136,\n      \"error_type\": \"internal\",\n      \"error_message\": \"string\",\n      \"project_id\": \"string\",\n      \"training_job_id\": \"string\",\n      \"provider\": \"string\",\n      \"base_model\": \"string\",\n      \"metadata\": {},\n      \"human_verdict\": \"incorrect\",\n      \"human_corrected_output\": \"\",\n      \"human_feedback_notes\": \"string\",\n      \"human_feedback_at\": \"1980-10-09T19:56:22.883Z\",\n      \"llmaj_verdict\": \"uncertain\",\n      \"llmaj_score\": 6984.581070090976,\n      \"llmaj_judged_at\": \"2007-12-04T17:24:48.500Z\",\n      \"llmaj_reasoning\": \"string\"\n    }\n  ],\n  \"total\": 8139,\n  \"limit\": 147,\n  \"offset\": 3737\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2cc9d2c1-a9b7-4fdf-8666-d3c32d795dfb",
+              "name": "Missing or invalid API key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "inferences"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "model_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "project_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "training_job_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "task",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "latency_min",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "latency_max",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "llmaj_score_min",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "llmaj_score_max",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "since",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "until",
+                      "value": "<dateTime>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c014a1ff-5ad3-43fc-8610-d0be97726cd2",
+          "name": "Get an inference record",
+          "request": {
+            "name": "Get an inference record",
+            "description": {
+              "content": "Retrieve a single inference record by ID. Includes LLM-as-Judge verdict and score when judging has completed (fields are null until then).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "inferences",
+                ":inference_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "inference_id",
+                  "description": "(Required) The inference record UUID returned in `inference_id` on any inference response."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7de85f01-fcc1-4397-bac8-088d3bbe69e0",
+              "name": "The inference record.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "inferences",
+                    ":inference_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "inference_id",
+                      "description": "(Required) The inference record UUID returned in `inference_id` on any inference response."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"user_id\": \"string\",\n  \"model_id\": \"string\",\n  \"input\": \"string\",\n  \"source\": \"api\",\n  \"status\": \"success\",\n  \"created_at\": \"1998-10-07T00:32:49.306Z\",\n  \"model_name\": \"string\",\n  \"task\": \"string\",\n  \"output\": \"\",\n  \"latency_ms\": 2809,\n  \"tokens\": 6675,\n  \"input_tokens\": 5343,\n  \"output_tokens\": 3262,\n  \"cache_read_tokens\": 7383,\n  \"cache_write_tokens\": 8916,\n  \"error_type\": \"validation\",\n  \"error_message\": \"string\",\n  \"project_id\": \"string\",\n  \"training_job_id\": \"string\",\n  \"provider\": \"string\",\n  \"base_model\": \"string\",\n  \"metadata\": {},\n  \"human_verdict\": \"correct\",\n  \"human_corrected_output\": \"\",\n  \"human_feedback_notes\": \"string\",\n  \"human_feedback_at\": \"1953-01-15T21:43:25.963Z\",\n  \"llmaj_verdict\": \"fail\",\n  \"llmaj_score\": 9672.442436798676,\n  \"llmaj_judged_at\": \"1980-08-14T07:20:51.101Z\",\n  \"llmaj_reasoning\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "278be3e0-c477-4fe9-b017-043f9081cd9f",
+              "name": "Missing or invalid API key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "inferences",
+                    ":inference_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "inference_id",
+                      "description": "(Required) The inference record UUID returned in `inference_id` on any inference response."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fca76f4f-6c5d-4d56-a8bc-70a2b01d13d2",
+              "name": "Resource not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "inferences",
+                    ":inference_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "inference_id",
+                      "description": "(Required) The inference record UUID returned in `inference_id` on any inference response."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "540e2456-0993-436a-ab18-dc5772e7a82f",
+          "name": "Submit inference feedback",
+          "request": {
+            "name": "Submit inference feedback",
+            "description": {
+              "content": "Submit a human correction on a past inference. Corrections are used as labeled examples for Adaptive Inference — Pioneer's continuous improvement loop that retrains your model on corrected live-traffic examples.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "inferences",
+                ":inference_id",
+                "feedback"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "inference_id",
+                  "description": "(Required) The inference record UUID to annotate."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"verdict\": \"<string>\",\n  \"corrected_output\": {},\n  \"notes\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "e3e81287-766f-4a0d-a3fd-4d7065765117",
+              "name": "Feedback recorded.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "inferences",
+                    ":inference_id",
+                    "feedback"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "inference_id",
+                      "description": "(Required) The inference record UUID to annotate."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"verdict\": \"correct\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"inference_id\": \"string\",\n  \"human_verdict\": \"string\",\n  \"human_feedback_at\": \"1955-12-19T23:56:27.544Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a6799370-3ad7-497a-b4a2-06520d4334db",
+              "name": "Missing or invalid API key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "inferences",
+                    ":inference_id",
+                    "feedback"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "inference_id",
+                      "description": "(Required) The inference record UUID to annotate."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"verdict\": \"correct\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4e7a456f-276e-429e-868a-044e8430f87e",
+              "name": "Resource not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "inferences",
+                    ":inference_id",
+                    "feedback"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "inference_id",
+                      "description": "(Required) The inference record UUID to annotate."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"verdict\": \"correct\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9ef69c5d-31f4-4f40-8b92-d418d0fe2729",
+              "name": "Request body failed schema validation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "inferences",
+                    ":inference_id",
+                    "feedback"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "inference_id",
+                      "description": "(Required) The inference record UUID to annotate."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"verdict\": \"correct\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.pioneer.ai",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "X-API-Key"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "26049700-fb11-4f25-a820-9537558d5388",
+    "name": "Pioneer Inference anthropic-compat inference-history API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Public inference API for Pioneer AI. Covers the Pioneer-native endpoint, OpenAI-compatible endpoints (/v1/chat/completions, /v1/completions, /v1/models), the Anthropic-compatible endpoint (/v1/messages), and inference history. Authenticate with an X-API-Key header (keys begin with pio_sk_).\n\nContact Support:\n Name: Pioneer AI\n Email: support@pioneer.ai",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Pioneer anthropic-compat inference API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-API-Key",
+      "value": "{{X-API-Key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "inference",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Run inference (Pioneer native)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.pioneer.ai/inference",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Unified inference endpoint for encoder tasks (NER, text classification, JSON extraction) and decoder tasks (text generation). Discriminated by the presence of a `messages` field: include `messages` for decoder generation; use `text` + `schema` for encoder tasks."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

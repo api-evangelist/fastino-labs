@@ -1,0 +1,72 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Pioneer Inference anthropic-compat API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-API-Key",
+      "value": "{{X-API-Key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "anthropic-compat",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List available models",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.pioneer.ai/v1/models",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of models to return. Omit for the full catalog."
+              },
+              {
+                "name": "before_id",
+                "value": "",
+                "type": "query",
+                "description": "Cursor for paginating backward (Anthropic-style)."
+              },
+              {
+                "name": "after_id",
+                "value": "",
+                "type": "query",
+                "description": "Cursor for paginating forward (Anthropic-style)."
+              }
+            ]
+          },
+          "docs": "Returns the Pioneer model catalog including base encoder models (GLiNER), base decoder LLMs, and any fine-tuned models you have deployed. Compatible with both Anthropic and OpenAI model-list consumers."
+        },
+        {
+          "info": {
+            "name": "Messages (Anthropic-compatible)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.pioneer.ai/v1/messages",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Anthropic Messages API compatible endpoint. Works with the Anthropic Python SDK by setting `base_url=\"https://api.pioneer.ai\"`. Set `stream=true` for SSE streaming in Anthropic event format. Extended-thinking is supported via the `thinking` field."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

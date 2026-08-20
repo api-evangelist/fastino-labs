@@ -34,6 +34,19 @@ modified: '2026-07-19'
 tags:
 - Company
 - Artificial Intelligence
+- Machine-Learning
+- Small Language Models
+- Fine-Tuning
+- Inference
+- Named Entity Recognition
+- Information Extraction
+- LLM
+- Agents
+- PII Detection
+- Model Training
+tags_raw:
+- Company
+- Artificial Intelligence
 - Machine Learning
 - Small Language Models
 - Fine-Tuning
@@ -82,6 +95,8 @@ apis:
   humanURL: https://docs.pioneer.ai/api-reference
   baseURL: https://api.pioneer.ai
   tags:
+  - Inference
+  tags_raw:
   - inference
   properties:
   - type: OpenAPI

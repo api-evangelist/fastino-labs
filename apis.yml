@@ -8,6 +8,18 @@ description: >-
   Gemma), evaluate them against labeled datasets, and serve inference through native, OpenAI-compatible,
   and Anthropic-compatible endpoints. Fastino also maintains the open-source GLiNER2 schema-based
   information-extraction model and the GLiGuard safety-moderation model.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: unknown
   onboarding: self-serve

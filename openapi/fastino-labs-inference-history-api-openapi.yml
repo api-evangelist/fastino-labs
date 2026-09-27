@@ -187,24 +187,6 @@ paths:
           $ref: '#/components/responses/ValidationError'
 components:
   schemas:
-    InferenceFeedbackResponse:
-      type: object
-      properties:
-        inference_id:
-          type: string
-        human_verdict:
-          type: string
-        human_feedback_at:
-          type: string
-          format: date-time
-    ErrorResponse:
-      type: object
-      properties:
-        detail:
-          oneOf:
-          - type: string
-          - type: object
-          description: Human-readable error message or structured detail object.
     InferenceFeedbackRequest:
       type: object
       required:
@@ -220,24 +202,6 @@ components:
         notes:
           type: string
           maxLength: 5000
-    ValidationErrorResponse:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            type: object
-            properties:
-              loc:
-                type: array
-                items:
-                  oneOf:
-                  - type: string
-                  - type: integer
-              msg:
-                type: string
-              type:
-                type: string
     InferenceRecord:
       type: object
       required:
@@ -335,6 +299,42 @@ components:
           format: date-time
         llmaj_reasoning:
           type: string
+    ValidationErrorResponse:
+      type: object
+      properties:
+        detail:
+          type: array
+          items:
+            type: object
+            properties:
+              loc:
+                type: array
+                items:
+                  oneOf:
+                  - type: string
+                  - type: integer
+              msg:
+                type: string
+              type:
+                type: string
+    InferenceFeedbackResponse:
+      type: object
+      properties:
+        inference_id:
+          type: string
+        human_verdict:
+          type: string
+        human_feedback_at:
+          type: string
+          format: date-time
+    ErrorResponse:
+      type: object
+      properties:
+        detail:
+          oneOf:
+          - type: string
+          - type: object
+          description: Human-readable error message or structured detail object.
     InferenceListResponse:
       type: object
       required:
@@ -355,12 +355,6 @@ components:
         offset:
           type: integer
   responses:
-    Unauthorized:
-      description: Missing or invalid API key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
     ValidationError:
       description: Request body failed schema validation.
       content:
@@ -369,6 +363,12 @@ components:
             $ref: '#/components/schemas/ValidationErrorResponse'
     NotFound:
       description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Missing or invalid API key.
       content:
         application/json:
           schema:

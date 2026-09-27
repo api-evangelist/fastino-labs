@@ -128,58 +128,62 @@ paths:
           $ref: '#/components/responses/RateLimited'
 components:
   schemas:
-    ErrorResponse:
+    AnthropicMessagesResponse:
       type: object
+      required:
+      - id
+      - type
+      - role
+      - content
+      - model
+      - stop_reason
+      - usage
       properties:
-        detail:
-          oneOf:
-          - type: string
-          - type: object
-          description: Human-readable error message or structured detail object.
-    ModelListResponse:
-      type: object
-      properties:
-        data:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+          - message
+        role:
+          type: string
+          enum:
+          - assistant
+        content:
           type: array
           items:
             type: object
             properties:
-              id:
-                type: string
-                description: Model identifier used in API requests.
               type:
                 type: string
                 enum:
-                - model
-              display_name:
+                - text
+                - tool_use
+                - thinking
+              text:
                 type: string
-              created_at:
-                type: string
-                format: date-time
-        has_more:
-          type: boolean
-        first_id:
+        model:
           type: string
-        last_id:
+        stop_reason:
           type: string
-    ValidationErrorResponse:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            type: object
-            properties:
-              loc:
-                type: array
-                items:
-                  oneOf:
-                  - type: string
-                  - type: integer
-              msg:
-                type: string
-              type:
-                type: string
+          enum:
+          - end_turn
+          - max_tokens
+          - stop_sequence
+          - tool_use
+        stop_sequence:
+          type: string
+        usage:
+          type: object
+          properties:
+            input_tokens:
+              type: integer
+            output_tokens:
+              type: integer
+            cache_read_input_tokens:
+              type: integer
+            cache_creation_input_tokens:
+              type: integer
     AnthropicMessagesRequest:
       type: object
       required:
@@ -260,63 +264,65 @@ components:
             items:
               type: string
           description: 'Pioneer encoder extension: extraction schema dict.'
-    AnthropicMessagesResponse:
+    ValidationErrorResponse:
       type: object
-      required:
-      - id
-      - type
-      - role
-      - content
-      - model
-      - stop_reason
-      - usage
       properties:
-        id:
-          type: string
-        type:
-          type: string
-          enum:
-          - message
-        role:
-          type: string
-          enum:
-          - assistant
-        content:
+        detail:
           type: array
           items:
             type: object
             properties:
+              loc:
+                type: array
+                items:
+                  oneOf:
+                  - type: string
+                  - type: integer
+              msg:
+                type: string
+              type:
+                type: string
+    ModelListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                description: Model identifier used in API requests.
               type:
                 type: string
                 enum:
-                - text
-                - tool_use
-                - thinking
-              text:
+                - model
+              display_name:
                 type: string
-        model:
+              created_at:
+                type: string
+                format: date-time
+        has_more:
+          type: boolean
+        first_id:
           type: string
-        stop_reason:
+        last_id:
           type: string
-          enum:
-          - end_turn
-          - max_tokens
-          - stop_sequence
-          - tool_use
-        stop_sequence:
-          type: string
-        usage:
-          type: object
-          properties:
-            input_tokens:
-              type: integer
-            output_tokens:
-              type: integer
-            cache_read_input_tokens:
-              type: integer
-            cache_creation_input_tokens:
-              type: integer
+    ErrorResponse:
+      type: object
+      properties:
+        detail:
+          oneOf:
+          - type: string
+          - type: object
+          description: Human-readable error message or structured detail object.
   responses:
+    ValidationError:
+      description: Request body failed schema validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationErrorResponse'
     RateLimited:
       description: Rate limit exceeded. Retry after the duration in the `Retry-After` response header.
       headers:
@@ -328,26 +334,20 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
+    PaymentRequired:
+      description: Insufficient credits or no active billing plan.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
     Unauthorized:
       description: Missing or invalid API key.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    ValidationError:
-      description: Request body failed schema validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ValidationErrorResponse'
     ModelNotFound:
       description: Model ID not found or not yet deployed.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    PaymentRequired:
-      description: Insufficient credits or no active billing plan.
       content:
         application/json:
           schema:

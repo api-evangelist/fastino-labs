@@ -49,7 +49,7 @@ modified: '2026-07-19'
 tags:
 - Company
 - Artificial Intelligence
-- Machine-Learning
+- Machine Learning
 - Small Language Models
 - Fine-Tuning
 - Inference
@@ -72,6 +72,7 @@ tags_raw:
 - Agents
 - PII Detection
 - Model Training
+- Machine-Learning
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -79,7 +80,7 @@ maintainers:
   email: info@apis.io
 apis:
 - aid: fastino-labs:fastino-labs-anthropic-compat-api
-  name: Fastino Labs anthropic-compat API
+  name: Fastino Labs Anthropic Compat API
   description: >-
     Anthropic-compatible endpoints. Use with the Anthropic SDK by setting base_url=https://api.pioneer.ai.
   humanURL: https://docs.pioneer.ai/api-reference
@@ -104,7 +105,7 @@ apis:
   - type: AgenticAccess
     url: agentic-access/fastino-labs-agentic-access.yml
 - aid: fastino-labs:fastino-labs-inference-api
-  name: Fastino Labs inference API
+  name: Fastino Labs Inference API
   description: >-
     Pioneer-native inference endpoint (encoder NER/classification/extraction and decoder text generation).
   humanURL: https://docs.pioneer.ai/api-reference
@@ -131,7 +132,7 @@ apis:
   - type: AgenticAccess
     url: agentic-access/fastino-labs-agentic-access.yml
 - aid: fastino-labs:fastino-labs-inference-history-api
-  name: Fastino Labs inference-history API
+  name: Fastino Labs Inference History API
   description: List and retrieve past inference records.
   humanURL: https://docs.pioneer.ai/api-reference
   baseURL: https://api.pioneer.ai
@@ -155,7 +156,7 @@ apis:
   - type: AgenticAccess
     url: agentic-access/fastino-labs-agentic-access.yml
 - aid: fastino-labs:fastino-labs-openai-compat-api
-  name: Fastino Labs openai-compat API
+  name: Fastino Labs Openai Compat API
   description: >-
     OpenAI-compatible endpoints. Use with the OpenAI SDK by setting base_url=https://api.pioneer.ai/v1.
   humanURL: https://docs.pioneer.ai/api-reference

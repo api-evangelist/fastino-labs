@@ -79,40 +79,53 @@ paths:
           $ref: '#/components/responses/RateLimited'
 components:
   schemas:
-    EncoderInferenceResponse:
+    EncoderInferenceRequest:
       type: object
       required:
-      - type
-      - inference_id
-      - result
       - model_id
-      - latency_ms
-      - token_usage
-      - model_used
+      - text
+      - schema
+      description: Request for encoder (GLiNER) tasks. Discriminated from GenerateInferenceRequest by the absence of a `messages` field.
       properties:
-        type:
-          type: string
-          enum:
-          - encoder
-        inference_id:
-          type: string
-          description: Unique inference ID. Use with GET /inferences/{inference_id} or POST /inferences/{inference_id}/feedback.
-        result:
-          oneOf:
-          - type: object
-          - type: array
-          description: Extraction result. Shape depends on the schema and task.
         model_id:
           type: string
-        latency_ms:
+          description: Training job UUID, project name, or base encoder model ID (e.g. `fastino/gliner2-base-v1`).
+        text:
+          oneOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+          description: Input text or list of texts for batch processing.
+        schema:
+          oneOf:
+          - type: object
+            description: 'Unified extraction schema dict with keys: entities, classifications, structures, relations.'
+          - type: array
+            items:
+              type: string
+            description: Deprecated flat entity label list. Use the dict form instead.
+          description: 'Extraction schema. Use the unified dict form: `{"entities": [{"name": "organization"}]}`.'
+        threshold:
           type: number
-          description: Server-side inference latency in milliseconds.
-        token_usage:
-          type: integer
-          description: Input tokens processed.
-        model_used:
+          minimum: 0.0
+          maximum: 1.0
+          default: 0.5
+          description: Confidence threshold for predictions.
+        include_confidence:
+          type: boolean
+          default: true
+        include_spans:
+          type: boolean
+          default: true
+          description: Include character-level start/end positions.
+        store:
+          type: boolean
+          default: true
+          description: Persist to inference history. Set false to opt out.
+        project_id:
           type: string
-          description: Resolved model identifier.
+          description: Project ID for attribution and auto-improvement.
     GenerateInferenceResponse:
       type: object
       required:
@@ -139,14 +152,6 @@ components:
           type: string
         latency_ms:
           type: number
-    ErrorResponse:
-      type: object
-      properties:
-        detail:
-          oneOf:
-          - type: string
-          - type: object
-          description: Human-readable error message or structured detail object.
     ValidationErrorResponse:
       type: object
       properties:
@@ -260,54 +265,55 @@ components:
           description: Persist to inference history. Set false to opt out.
         project_id:
           type: string
-    EncoderInferenceRequest:
+    ErrorResponse:
       type: object
-      required:
-      - model_id
-      - text
-      - schema
-      description: Request for encoder (GLiNER) tasks. Discriminated from GenerateInferenceRequest by the absence of a `messages` field.
       properties:
-        model_id:
-          type: string
-          description: Training job UUID, project name, or base encoder model ID (e.g. `fastino/gliner2-base-v1`).
-        text:
+        detail:
           oneOf:
           - type: string
-          - type: array
-            items:
-              type: string
-          description: Input text or list of texts for batch processing.
-        schema:
+          - type: object
+          description: Human-readable error message or structured detail object.
+    EncoderInferenceResponse:
+      type: object
+      required:
+      - type
+      - inference_id
+      - result
+      - model_id
+      - latency_ms
+      - token_usage
+      - model_used
+      properties:
+        type:
+          type: string
+          enum:
+          - encoder
+        inference_id:
+          type: string
+          description: Unique inference ID. Use with GET /inferences/{inference_id} or POST /inferences/{inference_id}/feedback.
+        result:
           oneOf:
           - type: object
-            description: 'Unified extraction schema dict with keys: entities, classifications, structures, relations.'
           - type: array
-            items:
-              type: string
-            description: Deprecated flat entity label list. Use the dict form instead.
-          description: 'Extraction schema. Use the unified dict form: `{"entities": [{"name": "organization"}]}`.'
-        threshold:
-          type: number
-          minimum: 0.0
-          maximum: 1.0
-          default: 0.5
-          description: Confidence threshold for predictions.
-        include_confidence:
-          type: boolean
-          default: true
-        include_spans:
-          type: boolean
-          default: true
-          description: Include character-level start/end positions.
-        store:
-          type: boolean
-          default: true
-          description: Persist to inference history. Set false to opt out.
-        project_id:
+          description: Extraction result. Shape depends on the schema and task.
+        model_id:
           type: string
-          description: Project ID for attribution and auto-improvement.
+        latency_ms:
+          type: number
+          description: Server-side inference latency in milliseconds.
+        token_usage:
+          type: integer
+          description: Input tokens processed.
+        model_used:
+          type: string
+          description: Resolved model identifier.
   responses:
+    ValidationError:
+      description: Request body failed schema validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationErrorResponse'
     RateLimited:
       description: Rate limit exceeded. Retry after the duration in the `Retry-After` response header.
       headers:
@@ -315,6 +321,12 @@ components:
           schema:
             type: integer
           description: Seconds to wait before retrying.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    PaymentRequired:
+      description: Insufficient credits or no active billing plan.
       content:
         application/json:
           schema:
@@ -327,18 +339,6 @@ components:
             $ref: '#/components/schemas/ErrorResponse'
     ModelNotFound:
       description: Model ID not found or not yet deployed.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    ValidationError:
-      description: Request body failed schema validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ValidationErrorResponse'
-    PaymentRequired:
-      description: Insufficient credits or no active billing plan.
       content:
         application/json:
           schema:

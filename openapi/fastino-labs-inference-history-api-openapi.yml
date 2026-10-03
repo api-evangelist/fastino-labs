@@ -187,21 +187,33 @@ paths:
           $ref: '#/components/responses/ValidationError'
 components:
   schemas:
-    InferenceFeedbackRequest:
+    InferenceListResponse:
       type: object
       required:
-      - verdict
+      - inferences
+      - total
+      - limit
+      - offset
       properties:
-        verdict:
-          type: string
-          enum:
-          - correct
-          - incorrect
-        corrected_output:
-          description: Required when verdict is `incorrect`. Shape should match the original inference schema.
-        notes:
-          type: string
-          maxLength: 5000
+        inferences:
+          type: array
+          items:
+            $ref: '#/components/schemas/InferenceRecord'
+        total:
+          type: integer
+          description: Total matching records (for pagination).
+        limit:
+          type: integer
+        offset:
+          type: integer
+    ErrorResponse:
+      type: object
+      properties:
+        detail:
+          oneOf:
+          - type: string
+          - type: object
+          description: Human-readable error message or structured detail object.
     InferenceRecord:
       type: object
       required:
@@ -327,33 +339,21 @@ components:
         human_feedback_at:
           type: string
           format: date-time
-    ErrorResponse:
-      type: object
-      properties:
-        detail:
-          oneOf:
-          - type: string
-          - type: object
-          description: Human-readable error message or structured detail object.
-    InferenceListResponse:
+    InferenceFeedbackRequest:
       type: object
       required:
-      - inferences
-      - total
-      - limit
-      - offset
+      - verdict
       properties:
-        inferences:
-          type: array
-          items:
-            $ref: '#/components/schemas/InferenceRecord'
-        total:
-          type: integer
-          description: Total matching records (for pagination).
-        limit:
-          type: integer
-        offset:
-          type: integer
+        verdict:
+          type: string
+          enum:
+          - correct
+          - incorrect
+        corrected_output:
+          description: Required when verdict is `incorrect`. Shape should match the original inference schema.
+        notes:
+          type: string
+          maxLength: 5000
   responses:
     ValidationError:
       description: Request body failed schema validation.

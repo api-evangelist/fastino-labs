@@ -184,6 +184,58 @@ components:
               type: integer
             cache_creation_input_tokens:
               type: integer
+    ErrorResponse:
+      type: object
+      properties:
+        detail:
+          oneOf:
+          - type: string
+          - type: object
+          description: Human-readable error message or structured detail object.
+    ValidationErrorResponse:
+      type: object
+      properties:
+        detail:
+          type: array
+          items:
+            type: object
+            properties:
+              loc:
+                type: array
+                items:
+                  oneOf:
+                  - type: string
+                  - type: integer
+              msg:
+                type: string
+              type:
+                type: string
+    ModelListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                description: Model identifier used in API requests.
+              type:
+                type: string
+                enum:
+                - model
+              display_name:
+                type: string
+              created_at:
+                type: string
+                format: date-time
+        has_more:
+          type: boolean
+        first_id:
+          type: string
+        last_id:
+          type: string
     AnthropicMessagesRequest:
       type: object
       required:
@@ -264,58 +316,6 @@ components:
             items:
               type: string
           description: 'Pioneer encoder extension: extraction schema dict.'
-    ValidationErrorResponse:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            type: object
-            properties:
-              loc:
-                type: array
-                items:
-                  oneOf:
-                  - type: string
-                  - type: integer
-              msg:
-                type: string
-              type:
-                type: string
-    ModelListResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-                description: Model identifier used in API requests.
-              type:
-                type: string
-                enum:
-                - model
-              display_name:
-                type: string
-              created_at:
-                type: string
-                format: date-time
-        has_more:
-          type: boolean
-        first_id:
-          type: string
-        last_id:
-          type: string
-    ErrorResponse:
-      type: object
-      properties:
-        detail:
-          oneOf:
-          - type: string
-          - type: object
-          description: Human-readable error message or structured detail object.
   responses:
     ValidationError:
       description: Request body failed schema validation.
@@ -323,13 +323,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ValidationErrorResponse'
-    RateLimited:
-      description: Rate limit exceeded. Retry after the duration in the `Retry-After` response header.
-      headers:
-        Retry-After:
-          schema:
-            type: integer
-          description: Seconds to wait before retrying.
+    ModelNotFound:
+      description: Model ID not found or not yet deployed.
       content:
         application/json:
           schema:
@@ -346,8 +341,13 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    ModelNotFound:
-      description: Model ID not found or not yet deployed.
+    RateLimited:
+      description: Rate limit exceeded. Retry after the duration in the `Retry-After` response header.
+      headers:
+        Retry-After:
+          schema:
+            type: integer
+          description: Seconds to wait before retrying.
       content:
         application/json:
           schema:

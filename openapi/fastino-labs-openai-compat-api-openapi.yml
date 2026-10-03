@@ -130,123 +130,6 @@ paths:
           $ref: '#/components/responses/RateLimited'
 components:
   schemas:
-    ChatCompletionResponse:
-      type: object
-      required:
-      - id
-      - object
-      - created
-      - model
-      - choices
-      - usage
-      properties:
-        id:
-          type: string
-        object:
-          type: string
-          enum:
-          - chat.completion
-        created:
-          type: integer
-        model:
-          type: string
-        choices:
-          type: array
-          items:
-            type: object
-            properties:
-              index:
-                type: integer
-              message:
-                type: object
-              finish_reason:
-                type: string
-        usage:
-          $ref: '#/components/schemas/UsageStats'
-        x_pioneer:
-          $ref: '#/components/schemas/PioneerExtension'
-    ValidationErrorResponse:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            type: object
-            properties:
-              loc:
-                type: array
-                items:
-                  oneOf:
-                  - type: string
-                  - type: integer
-              msg:
-                type: string
-              type:
-                type: string
-    PioneerExtension:
-      type: object
-      description: Pioneer-specific extension on OpenAI-compatible responses.
-      properties:
-        inference_id:
-          type: string
-          description: Pioneer inference record ID. Use with GET /inferences/{inference_id} to poll for async LLM-judge results. Null when persistence was disabled.
-        routed_model:
-          type: string
-          description: Actual backend model selected by a router project (e.g. `pioneer/auto`). Null when not routed.
-    TextCompletionRequest:
-      type: object
-      required:
-      - model
-      - prompt
-      properties:
-        model:
-          type: string
-        prompt:
-          type: string
-        temperature:
-          type: number
-        max_tokens:
-          type: integer
-          minimum: 1
-          maximum: 131072
-        stream:
-          type: boolean
-        stop:
-          oneOf:
-          - type: string
-          - type: array
-            items:
-              type: string
-        echo:
-          type: boolean
-          default: false
-        logprobs:
-          type: integer
-          minimum: 0
-          maximum: 20
-        store:
-          type: boolean
-          default: true
-        reasoning:
-          type: object
-    UsageStats:
-      type: object
-      properties:
-        prompt_tokens:
-          type: integer
-        completion_tokens:
-          type: integer
-        total_tokens:
-          type: integer
-        prompt_tokens_details:
-          type: object
-          properties:
-            cached_tokens:
-              type: integer
-              description: Input tokens served from cache (cache read).
-            cache_write_tokens:
-              type: integer
-              description: Input tokens written to cache (cache creation).
     ChatCompletionRequest:
       type: object
       required:
@@ -326,6 +209,133 @@ components:
           type: number
         user:
           type: string
+    TextCompletionRequest:
+      type: object
+      required:
+      - model
+      - prompt
+      properties:
+        model:
+          type: string
+        prompt:
+          type: string
+        temperature:
+          type: number
+        max_tokens:
+          type: integer
+          minimum: 1
+          maximum: 131072
+        stream:
+          type: boolean
+        stop:
+          oneOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+        echo:
+          type: boolean
+          default: false
+        logprobs:
+          type: integer
+          minimum: 0
+          maximum: 20
+        store:
+          type: boolean
+          default: true
+        reasoning:
+          type: object
+    UsageStats:
+      type: object
+      properties:
+        prompt_tokens:
+          type: integer
+        completion_tokens:
+          type: integer
+        total_tokens:
+          type: integer
+        prompt_tokens_details:
+          type: object
+          properties:
+            cached_tokens:
+              type: integer
+              description: Input tokens served from cache (cache read).
+            cache_write_tokens:
+              type: integer
+              description: Input tokens written to cache (cache creation).
+    ErrorResponse:
+      type: object
+      properties:
+        detail:
+          oneOf:
+          - type: string
+          - type: object
+          description: Human-readable error message or structured detail object.
+    ValidationErrorResponse:
+      type: object
+      properties:
+        detail:
+          type: array
+          items:
+            type: object
+            properties:
+              loc:
+                type: array
+                items:
+                  oneOf:
+                  - type: string
+                  - type: integer
+              msg:
+                type: string
+              type:
+                type: string
+    PioneerExtension:
+      type: object
+      description: Pioneer-specific extension on OpenAI-compatible responses.
+      properties:
+        inference_id:
+          type: string
+          description: Pioneer inference record ID. Use with GET /inferences/{inference_id} to poll for async LLM-judge results. Null when persistence was disabled.
+        routed_model:
+          type: string
+          description: Actual backend model selected by a router project (e.g. `pioneer/auto`). Null when not routed.
+    ChatCompletionStreamChunk:
+      type: object
+      description: 'One SSE event payload when `stream=true`. Terminal chunk carries `finish_reason` and optionally `usage` and `x_pioneer`. Stream ends with `data: [DONE]`.'
+      properties:
+        id:
+          type: string
+        object:
+          type: string
+          enum:
+          - chat.completion.chunk
+        created:
+          type: integer
+        model:
+          type: string
+        choices:
+          type: array
+          items:
+            type: object
+            properties:
+              index:
+                type: integer
+              delta:
+                type: object
+                properties:
+                  content:
+                    type: string
+                  reasoning_content:
+                    type: string
+                    description: Chain-of-thought tokens (de facto vLLM/DeepSeek/Fireworks/OpenRouter extension).
+                  tool_calls:
+                    type: array
+              finish_reason:
+                type: string
+        usage:
+          $ref: '#/components/schemas/UsageStats'
+        x_pioneer:
+          $ref: '#/components/schemas/PioneerExtension'
     TextCompletionResponse:
       type: object
       required:
@@ -365,14 +375,41 @@ components:
           $ref: '#/components/schemas/UsageStats'
         x_pioneer:
           $ref: '#/components/schemas/PioneerExtension'
-    ErrorResponse:
+    ChatCompletionResponse:
       type: object
+      required:
+      - id
+      - object
+      - created
+      - model
+      - choices
+      - usage
       properties:
-        detail:
-          oneOf:
-          - type: string
-          - type: object
-          description: Human-readable error message or structured detail object.
+        id:
+          type: string
+        object:
+          type: string
+          enum:
+          - chat.completion
+        created:
+          type: integer
+        model:
+          type: string
+        choices:
+          type: array
+          items:
+            type: object
+            properties:
+              index:
+                type: integer
+              message:
+                type: object
+              finish_reason:
+                type: string
+        usage:
+          $ref: '#/components/schemas/UsageStats'
+        x_pioneer:
+          $ref: '#/components/schemas/PioneerExtension'
     TextCompletionStreamChunk:
       type: object
       description: One SSE event payload for /v1/completions when `stream=true`.
@@ -404,43 +441,6 @@ components:
           $ref: '#/components/schemas/UsageStats'
         x_pioneer:
           $ref: '#/components/schemas/PioneerExtension'
-    ChatCompletionStreamChunk:
-      type: object
-      description: 'One SSE event payload when `stream=true`. Terminal chunk carries `finish_reason` and optionally `usage` and `x_pioneer`. Stream ends with `data: [DONE]`.'
-      properties:
-        id:
-          type: string
-        object:
-          type: string
-          enum:
-          - chat.completion.chunk
-        created:
-          type: integer
-        model:
-          type: string
-        choices:
-          type: array
-          items:
-            type: object
-            properties:
-              index:
-                type: integer
-              delta:
-                type: object
-                properties:
-                  content:
-                    type: string
-                  reasoning_content:
-                    type: string
-                    description: Chain-of-thought tokens (de facto vLLM/DeepSeek/Fireworks/OpenRouter extension).
-                  tool_calls:
-                    type: array
-              finish_reason:
-                type: string
-        usage:
-          $ref: '#/components/schemas/UsageStats'
-        x_pioneer:
-          $ref: '#/components/schemas/PioneerExtension'
   responses:
     ValidationError:
       description: Request body failed schema validation.
@@ -448,13 +448,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ValidationErrorResponse'
-    RateLimited:
-      description: Rate limit exceeded. Retry after the duration in the `Retry-After` response header.
-      headers:
-        Retry-After:
-          schema:
-            type: integer
-          description: Seconds to wait before retrying.
+    ModelNotFound:
+      description: Model ID not found or not yet deployed.
       content:
         application/json:
           schema:
@@ -465,14 +460,19 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    ModelNotFound:
-      description: Model ID not found or not yet deployed.
+    Unauthorized:
+      description: Missing or invalid API key.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    Unauthorized:
-      description: Missing or invalid API key.
+    RateLimited:
+      description: Rate limit exceeded. Retry after the duration in the `Retry-After` response header.
+      headers:
+        Retry-After:
+          schema:
+            type: integer
+          description: Seconds to wait before retrying.
       content:
         application/json:
           schema:

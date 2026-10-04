@@ -187,33 +187,6 @@ paths:
           $ref: '#/components/responses/ValidationError'
 components:
   schemas:
-    InferenceListResponse:
-      type: object
-      required:
-      - inferences
-      - total
-      - limit
-      - offset
-      properties:
-        inferences:
-          type: array
-          items:
-            $ref: '#/components/schemas/InferenceRecord'
-        total:
-          type: integer
-          description: Total matching records (for pagination).
-        limit:
-          type: integer
-        offset:
-          type: integer
-    ErrorResponse:
-      type: object
-      properties:
-        detail:
-          oneOf:
-          - type: string
-          - type: object
-          description: Human-readable error message or structured detail object.
     InferenceRecord:
       type: object
       required:
@@ -311,24 +284,25 @@ components:
           format: date-time
         llmaj_reasoning:
           type: string
-    ValidationErrorResponse:
+    InferenceListResponse:
       type: object
+      required:
+      - inferences
+      - total
+      - limit
+      - offset
       properties:
-        detail:
+        inferences:
           type: array
           items:
-            type: object
-            properties:
-              loc:
-                type: array
-                items:
-                  oneOf:
-                  - type: string
-                  - type: integer
-              msg:
-                type: string
-              type:
-                type: string
+            $ref: '#/components/schemas/InferenceRecord'
+        total:
+          type: integer
+          description: Total matching records (for pagination).
+        limit:
+          type: integer
+        offset:
+          type: integer
     InferenceFeedbackResponse:
       type: object
       properties:
@@ -354,25 +328,51 @@ components:
         notes:
           type: string
           maxLength: 5000
+    ValidationErrorResponse:
+      type: object
+      properties:
+        detail:
+          type: array
+          items:
+            type: object
+            properties:
+              loc:
+                type: array
+                items:
+                  oneOf:
+                  - type: string
+                  - type: integer
+              msg:
+                type: string
+              type:
+                type: string
+    ErrorResponse:
+      type: object
+      properties:
+        detail:
+          oneOf:
+          - type: string
+          - type: object
+          description: Human-readable error message or structured detail object.
   responses:
-    ValidationError:
-      description: Request body failed schema validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ValidationErrorResponse'
-    NotFound:
-      description: Resource not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
     Unauthorized:
       description: Missing or invalid API key.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    ValidationError:
+      description: Request body failed schema validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationErrorResponse'
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

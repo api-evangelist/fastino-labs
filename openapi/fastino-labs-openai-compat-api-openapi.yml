@@ -129,7 +129,195 @@ paths:
         '429':
           $ref: '#/components/responses/RateLimited'
 components:
+  responses:
+    PaymentRequired:
+      description: Insufficient credits or no active billing plan.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    RateLimited:
+      description: Rate limit exceeded. Retry after the duration in the `Retry-After` response header.
+      headers:
+        Retry-After:
+          schema:
+            type: integer
+          description: Seconds to wait before retrying.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    ValidationError:
+      description: Request body failed schema validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationErrorResponse'
+    ModelNotFound:
+      description: Model ID not found or not yet deployed.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   schemas:
+    ChatCompletionStreamChunk:
+      type: object
+      description: 'One SSE event payload when `stream=true`. Terminal chunk carries `finish_reason` and optionally `usage` and `x_pioneer`. Stream ends with `data: [DONE]`.'
+      properties:
+        id:
+          type: string
+        object:
+          type: string
+          enum:
+          - chat.completion.chunk
+        created:
+          type: integer
+        model:
+          type: string
+        choices:
+          type: array
+          items:
+            type: object
+            properties:
+              index:
+                type: integer
+              delta:
+                type: object
+                properties:
+                  content:
+                    type: string
+                  reasoning_content:
+                    type: string
+                    description: Chain-of-thought tokens (de facto vLLM/DeepSeek/Fireworks/OpenRouter extension).
+                  tool_calls:
+                    type: array
+              finish_reason:
+                type: string
+        usage:
+          $ref: '#/components/schemas/UsageStats'
+        x_pioneer:
+          $ref: '#/components/schemas/PioneerExtension'
+    ChatCompletionResponse:
+      type: object
+      required:
+      - id
+      - object
+      - created
+      - model
+      - choices
+      - usage
+      properties:
+        id:
+          type: string
+        object:
+          type: string
+          enum:
+          - chat.completion
+        created:
+          type: integer
+        model:
+          type: string
+        choices:
+          type: array
+          items:
+            type: object
+            properties:
+              index:
+                type: integer
+              message:
+                type: object
+              finish_reason:
+                type: string
+        usage:
+          $ref: '#/components/schemas/UsageStats'
+        x_pioneer:
+          $ref: '#/components/schemas/PioneerExtension'
+    TextCompletionResponse:
+      type: object
+      required:
+      - id
+      - object
+      - created
+      - model
+      - choices
+      - usage
+      properties:
+        id:
+          type: string
+        object:
+          type: string
+          enum:
+          - text_completion
+        created:
+          type: integer
+        model:
+          type: string
+        choices:
+          type: array
+          items:
+            type: object
+            properties:
+              index:
+                type: integer
+              text:
+                type: string
+              logprobs:
+                type: object
+              finish_reason:
+                type: string
+              reasoning_content:
+                type: string
+        usage:
+          $ref: '#/components/schemas/UsageStats'
+        x_pioneer:
+          $ref: '#/components/schemas/PioneerExtension'
+    PioneerExtension:
+      type: object
+      description: Pioneer-specific extension on OpenAI-compatible responses.
+      properties:
+        inference_id:
+          type: string
+          description: Pioneer inference record ID. Use with GET /inferences/{inference_id} to poll for async LLM-judge results. Null when persistence was disabled.
+        routed_model:
+          type: string
+          description: Actual backend model selected by a router project (e.g. `pioneer/auto`). Null when not routed.
+    TextCompletionStreamChunk:
+      type: object
+      description: One SSE event payload for /v1/completions when `stream=true`.
+      properties:
+        id:
+          type: string
+        object:
+          type: string
+          enum:
+          - text_completion
+        created:
+          type: integer
+        model:
+          type: string
+        choices:
+          type: array
+          items:
+            type: object
+            properties:
+              index:
+                type: integer
+              text:
+                type: string
+              finish_reason:
+                type: string
+              reasoning_content:
+                type: string
+        usage:
+          $ref: '#/components/schemas/UsageStats'
+        x_pioneer:
+          $ref: '#/components/schemas/PioneerExtension'
     ChatCompletionRequest:
       type: object
       required:
@@ -263,14 +451,6 @@ components:
             cache_write_tokens:
               type: integer
               description: Input tokens written to cache (cache creation).
-    ErrorResponse:
-      type: object
-      properties:
-        detail:
-          oneOf:
-          - type: string
-          - type: object
-          description: Human-readable error message or structured detail object.
     ValidationErrorResponse:
       type: object
       properties:
@@ -289,194 +469,14 @@ components:
                 type: string
               type:
                 type: string
-    PioneerExtension:
+    ErrorResponse:
       type: object
-      description: Pioneer-specific extension on OpenAI-compatible responses.
       properties:
-        inference_id:
-          type: string
-          description: Pioneer inference record ID. Use with GET /inferences/{inference_id} to poll for async LLM-judge results. Null when persistence was disabled.
-        routed_model:
-          type: string
-          description: Actual backend model selected by a router project (e.g. `pioneer/auto`). Null when not routed.
-    ChatCompletionStreamChunk:
-      type: object
-      description: 'One SSE event payload when `stream=true`. Terminal chunk carries `finish_reason` and optionally `usage` and `x_pioneer`. Stream ends with `data: [DONE]`.'
-      properties:
-        id:
-          type: string
-        object:
-          type: string
-          enum:
-          - chat.completion.chunk
-        created:
-          type: integer
-        model:
-          type: string
-        choices:
-          type: array
-          items:
-            type: object
-            properties:
-              index:
-                type: integer
-              delta:
-                type: object
-                properties:
-                  content:
-                    type: string
-                  reasoning_content:
-                    type: string
-                    description: Chain-of-thought tokens (de facto vLLM/DeepSeek/Fireworks/OpenRouter extension).
-                  tool_calls:
-                    type: array
-              finish_reason:
-                type: string
-        usage:
-          $ref: '#/components/schemas/UsageStats'
-        x_pioneer:
-          $ref: '#/components/schemas/PioneerExtension'
-    TextCompletionResponse:
-      type: object
-      required:
-      - id
-      - object
-      - created
-      - model
-      - choices
-      - usage
-      properties:
-        id:
-          type: string
-        object:
-          type: string
-          enum:
-          - text_completion
-        created:
-          type: integer
-        model:
-          type: string
-        choices:
-          type: array
-          items:
-            type: object
-            properties:
-              index:
-                type: integer
-              text:
-                type: string
-              logprobs:
-                type: object
-              finish_reason:
-                type: string
-              reasoning_content:
-                type: string
-        usage:
-          $ref: '#/components/schemas/UsageStats'
-        x_pioneer:
-          $ref: '#/components/schemas/PioneerExtension'
-    ChatCompletionResponse:
-      type: object
-      required:
-      - id
-      - object
-      - created
-      - model
-      - choices
-      - usage
-      properties:
-        id:
-          type: string
-        object:
-          type: string
-          enum:
-          - chat.completion
-        created:
-          type: integer
-        model:
-          type: string
-        choices:
-          type: array
-          items:
-            type: object
-            properties:
-              index:
-                type: integer
-              message:
-                type: object
-              finish_reason:
-                type: string
-        usage:
-          $ref: '#/components/schemas/UsageStats'
-        x_pioneer:
-          $ref: '#/components/schemas/PioneerExtension'
-    TextCompletionStreamChunk:
-      type: object
-      description: One SSE event payload for /v1/completions when `stream=true`.
-      properties:
-        id:
-          type: string
-        object:
-          type: string
-          enum:
-          - text_completion
-        created:
-          type: integer
-        model:
-          type: string
-        choices:
-          type: array
-          items:
-            type: object
-            properties:
-              index:
-                type: integer
-              text:
-                type: string
-              finish_reason:
-                type: string
-              reasoning_content:
-                type: string
-        usage:
-          $ref: '#/components/schemas/UsageStats'
-        x_pioneer:
-          $ref: '#/components/schemas/PioneerExtension'
-  responses:
-    ValidationError:
-      description: Request body failed schema validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ValidationErrorResponse'
-    ModelNotFound:
-      description: Model ID not found or not yet deployed.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    PaymentRequired:
-      description: Insufficient credits or no active billing plan.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    Unauthorized:
-      description: Missing or invalid API key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    RateLimited:
-      description: Rate limit exceeded. Retry after the duration in the `Retry-After` response header.
-      headers:
-        Retry-After:
-          schema:
-            type: integer
-          description: Seconds to wait before retrying.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
+        detail:
+          oneOf:
+          - type: string
+          - type: object
+          description: Human-readable error message or structured detail object.
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

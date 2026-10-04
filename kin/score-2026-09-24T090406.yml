@@ -1,24 +1,22 @@
-# Kin Score artifact — fastino-labs — 2026-08-25T154045
+# Kin Score artifact — fastino-labs — 2026-09-24T090406
 # The API Evangelist rating (https://github.com/api-evangelist/kin-score). Generated; do not edit.
 ---
 kin_score:
   slug: fastino-labs
-  schema_version: 0.14.0
-  scored_at: '2026-08-25'
-  run_ts: 2026-08-25T154045
-  composite: 51.5
+  schema_version: 0.22.0
+  scored_at: '2026-09-24'
+  run_ts: 2026-09-24T090406
+  composite: 47.7
   band: developing
   facets:
-    discoverability: 92.6
+    discoverability: 75.9
     contract_quality: 61.1
-    governance: 16.7
+    contract_governance: 4.5
     operational_transparency: 55.3
     developer_ergonomics: 78.6
-    commercial_clarity: 10.5
-    contract_governance: 16.7
     access_clarity: 10.5
   agent_readiness:
-    score: 54.2
+    score: 52.0
     band: agent-ready
     band_gated_from: agent-native
     dimensions:
@@ -34,7 +32,7 @@ kin_score:
       event_surface_described: false
       agent_skills: true
       well_known_catalog: true
-      consent_identity: true
+      consent_identity: false
       agent_card: false
       dry_run_mode: false
       delegated_identity: served

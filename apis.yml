@@ -59,6 +59,7 @@ tags:
 - Agents
 - PII Detection
 - Model Training
+- Foundation Models
 tags_raw:
 - Company
 - Artificial Intelligence
@@ -73,6 +74,7 @@ tags_raw:
 - PII Detection
 - Model Training
 - Machine-Learning
+- Foundation Models
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -181,6 +183,9 @@ apis:
   - type: AgenticAccess
     url: agentic-access/fastino-labs-agentic-access.yml
 common:
+- type: CapabilityMap
+  url: capabilities/fastino-labs-capability-edges.yml
+  name: Fastino Labs Business Capability Map
 - type: Overlay
   url: overlays/fastino-labs-pioneer-overlay.yaml
 - type: Website

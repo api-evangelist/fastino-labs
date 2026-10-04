@@ -1,0 +1,47 @@
+slug: fastino-labs
+provider: Fastino Labs
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 3
+edges:
+- tag: Inference
+  spec_file: fastino-labs-inference-api-openapi.yml
+  capability_id: BC-610.60
+  capability_id_l1: BC-610
+  capability_name: Artificial Intelligence Management
+  confidence: 0.8
+  evidence: POST /inference "Run inference (Pioneer native)"; schemas GenerateInferenceRequest, EncoderInferenceResponse,
+    ReasoningConfig
+  reason: Serving model inference for fine-tuned SLM/LLM models is AI/ML model operation (MLOps/model
+    serving), which sits under Artificial Intelligence Management.
+- tag: anthropic-compat
+  spec_file: fastino-labs-anthropic-compat-api-openapi.yml
+  capability_id: BC-610.60
+  capability_id_l1: BC-610
+  capability_name: Artificial Intelligence Management
+  confidence: 0.75
+  evidence: POST /v1/messages "Messages (Anthropic-compatible)"; GET /v1/models "List available models";
+    schema AnthropicMessagesRequest
+  reason: An Anthropic-compatible model invocation and model catalogue surface — model serving and model
+    inventory, i.e. AI/ML lifecycle operation. Tag itself is a compatibility shim, which slightly lowers
+    confidence.
+- tag: inference-history
+  spec_file: fastino-labs-inference-history-api-openapi.yml
+  capability_id: BC-610.60
+  capability_id_l1: BC-610
+  capability_name: Artificial Intelligence Management
+  confidence: 0.7
+  evidence: GET /inferences "List inference history"; POST /inferences/{inference_id}/feedback "Submit
+    inference feedback"; schema InferenceRecord
+  reason: Inference record retention and feedback capture supports model monitoring and evaluation feedback
+    loops, part of the AI/ML model lifecycle. Could alternatively be read as plain audit logging, hence
+    moderate confidence.

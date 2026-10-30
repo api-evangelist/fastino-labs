@@ -64,6 +64,141 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Fastino Labs is a company surfaced as a portfolio company of insight-partners and added to the API Evangelist network as a stub for enrichment. This profile is a lead awaiting the enrichment pipeline.
+Fastino Labs is an applied research lab building production-ready small language models (SLMs) for agentic AI — structured data extraction, classification, PII detection, and safety moderation. Its Pioneer platform is an agentic fine-tuning and inference API that lets teams generate synthetic training data, fine-tune GLiNER encoder models and open-source decoder LLMs (Qwen, Llama, DeepSeek, Gemma), evaluate them against labeled datasets, and serve inference through native, OpenAI-compatible, and Anthropic-compatible endpoints. Fastino also maintains the open-source GLiNER2 schema-based information-extraction model and the GLiGuard safety-moderation model.
 
-Backed by: insight-partners — https://www.fastino.ai/
+**Areas:** Company · Artificial Intelligence · Machine Learning · Small Language Models · Fine-Tuning · Inference · Named Entity Recognition · Information Extraction · LLM · Agents · PII Detection · Model Training
+
+## Fastino Labs on APIs.io
+
+Everything profiled for Fastino Labs is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/fastino-labs/](https://apis.io/providers/fastino-labs/)** — or go straight to one of the APIs or properties below.
+
+### APIs (4)
+
+- [Fastino Labs Anthropic Compat API](https://apis.io/apis/fastino-labs/fastino-labs-anthropic-compat-api/) — Anthropic-compatible endpoints. Use with the Anthropic SDK by setting base_url=https://api.pioneer.ai.
+- [Fastino Labs Inference API](https://apis.io/apis/fastino-labs/fastino-labs-inference-api/) — Pioneer-native inference endpoint (encoder NER/classification/extraction and decoder text generation).
+- [Fastino Labs Inference History API](https://apis.io/apis/fastino-labs/fastino-labs-inference-history-api/) — List and retrieve past inference records.
+- [Fastino Labs Openai Compat API](https://apis.io/apis/fastino-labs/fastino-labs-openai-compat-api/) — OpenAI-compatible endpoints. Use with the OpenAI SDK by setting base_url=https://api.pioneer.ai/v1.
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [pioneer-docs](https://apis.io/servers/fastino-labs/pioneer-docs/)
+
+#### Agentic access (1)
+
+Which operations an agent can call, which act, and which need a human in the loop.
+
+- [Fastino Labs Agentic Access](https://apis.io/agentic-access/fastino-labs/fastino-labs-agentic-access/)
+
+#### Collections (4)
+
+Postman and Open Collection request collections.
+
+- [Pioneer Inference anthropic-compat API](https://apis.io/collections/fastino-labs/open-fastino-labs-anthropic-compat-api/)
+- [Pioneer anthropic-compat inference API](https://apis.io/collections/fastino-labs/open-fastino-labs-inference-api/)
+- [Pioneer Inference anthropic-compat inference-history API](https://apis.io/collections/fastino-labs/open-fastino-labs-inference-history-api/)
+- [Pioneer Inference anthropic-compat openai-compat API](https://apis.io/collections/fastino-labs/open-fastino-labs-openai-compat-api/)
+
+#### Overlays (1)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Fastino Labs Pioneer Overlay](https://apis.io/overlays/fastino-labs/fastino-labs-pioneer-overlay/)
+
+#### Security (3)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Fastino Labs Authentication](https://apis.io/security/fastino-labs/fastino-labs-authentication/)
+- [Fastino Labs Domain Security](https://apis.io/security/fastino-labs/fastino-labs-domain-security/)
+- [Fastino Labs Vulnerability Disclosure](https://apis.io/security/fastino-labs/fastino-labs-vulnerability-disclosure/)
+
+#### OAuth scopes (1)
+
+The permissions the API asks for.
+
+- [Fastino Labs Scopes](https://apis.io/scopes/fastino-labs/fastino-labs-scopes/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Fastino Labs Rate Limits](https://apis.io/rate-limits/fastino-labs/fastino-labs-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.fastino.ai/)
+- [Documentation](https://docs.pioneer.ai)
+- [Getting started](https://docs.pioneer.ai/quickstart)
+- [API reference](https://docs.pioneer.ai/api-reference)
+- [Pricing](https://docs.pioneer.ai/pricing)
+- [Sign up](https://agent.pioneer.ai)
+- [Support](https://discord.gg/e99x4szUYS)
+- [Blog](https://www.fastino.ai/blog)
+- [Security](https://fastino.ai/.well-known/security.txt)
+- [Terms of service](https://agent.pioneer.ai/terms)
+- [Privacy policy](https://agent.pioneer.ai/privacy)
+- [GitHub](https://github.com/fastino-ai)
+- [Status](https://pioneerai.statuspage.io)
+
+## API Evangelist rating
+
+**Kin Score 47.6** — developing · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 71.7 |
+| Contract quality | 55.0 |
+| Contract governance | 4.5 |
+| Operational transparency | 55.3 |
+| Developer ergonomics | 78.6 |
+| Access clarity | 10.5 |
+
+**Agent readiness 54.6** — agent-ready (gated down from agent-native)
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | documented (partial credit) |
+| Auth Clarity | served (partial credit) |
+| Idempotency | — |
+| Error Semantics | documented (partial credit) |
+| OpenAPI Examples | verified |
+| Rate Limit Signal | verified |
+| Event Surface Described | — |
+| Agent Skills | yes |
+| Well Known Catalog | yes |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | served (partial credit) |
+| Protected Resource Metadata | verified |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | paginated |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 30.0** — AI & Biometrics
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/fastino-labs/](https://apis.io/providers/fastino-labs/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Fastino Labs: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/fastino-labs/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
